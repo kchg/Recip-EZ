@@ -1,5 +1,6 @@
 package com.stringcheese.recipez.recip_ez;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -8,8 +9,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     private ListView mDrawerList;
@@ -23,7 +26,33 @@ public class MainActivity extends AppCompatActivity {
 
         //navigation drawer
         mDrawerList = (ListView) findViewById(R.id.navList);
-        addDrawerItems();
+        String[] osArray = { "Calendar", "Recipes", "Shopping List", "Settings", "Help" };
+        mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, osArray);
+        mDrawerList.setAdapter(mAdapter);
+        mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                switch(position)
+                {
+                    case 0:
+                        Intent newActivity = new Intent(MainActivity.this, AddRecipes.class);
+                        startActivity(newActivity);
+                        break;
+                    case 1:
+                        Intent listActivity = new Intent(MainActivity.this, AddRecipes.class);
+                        startActivity(listActivity);
+                        break;
+                    case 2:
+                        Intent settingActivity = new Intent(MainActivity.this, AddRecipes.class);
+                        startActivity(settingActivity);
+                        break;
+                    case 3:
+                        Intent helpActivity = new Intent(MainActivity.this, AddRecipes.class);
+                        startActivity(helpActivity);
+                        break;
+                }
+            }
+        });
 
     }
 
