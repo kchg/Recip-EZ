@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.stringcheese.recipez.recip_ez.AddRecipes">
+    tools:context="com.stringcheese.recipez.recip_ez.SettingsFragment">
 
     <!-- TODO: Update blank fragment layout -->
 
@@ -10,8 +10,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Add recipes page"
-        android:id="@+id/textView"
+        android:text="Settings screen: features TBA"
+        android:id="@+id/textView7"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
 </RelativeLayout>
