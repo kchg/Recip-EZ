@@ -14,4 +14,14 @@
         android:id="@+id/textView"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add Recipe"
+        android:id="@+id/add_recipe"
+        android:layout_below="@+id/textView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="38dp" />
+
 </RelativeLayout>
