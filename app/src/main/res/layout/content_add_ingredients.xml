@@ -16,10 +16,28 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="todo: implement search for ingredients in an sql file"
-        android:id="@+id/textView2"
+        android:text="testtext"
+        android:id="@+id/testtext"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add Test"
+        android:id="@+id/addbutton"
         android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="236dp" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="126dp"
+        android:onClick="addButtonClicked"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Delete Test"
+        android:id="@+id/button2"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="104dp"
+        android:onClick="deleteButtonClicked" />
 </RelativeLayout>
