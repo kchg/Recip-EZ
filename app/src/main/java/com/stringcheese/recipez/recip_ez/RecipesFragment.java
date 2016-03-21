@@ -34,7 +34,6 @@ public class RecipesFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.add_recipe:
-                Toast.makeText(getActivity(), "button clicked", Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(getActivity(), add_recipes.class);
                 startActivity(intent);
                 break;
