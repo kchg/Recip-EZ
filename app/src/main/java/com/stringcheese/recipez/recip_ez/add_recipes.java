@@ -17,7 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.TextView;
-
+/*TODO: add page titles*/
 public class add_recipes extends AppCompatActivity {
 
     /**
