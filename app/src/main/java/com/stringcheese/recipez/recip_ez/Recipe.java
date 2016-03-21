@@ -9,6 +9,7 @@ public class Recipe {
     private int _id;
     private String _recipename;
     private String _description;
+    private String _directions;
 
     ArrayList ingredients = new ArrayList();
 
@@ -21,11 +22,12 @@ public class Recipe {
         this.ingredients = ingredients;
     }
 
-    public Recipe(int _id, String _recipename, String _description, ArrayList ingredients) {
+    public Recipe(int _id, String _recipename, String _description, ArrayList ingredients, String _directions) {
         this._id = _id;
         this._recipename = _recipename;
         this._description = _description;
         this.ingredients = ingredients;
+        this._directions = _directions;
     }
 
     public int get_id() {

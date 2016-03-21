@@ -6,15 +6,6 @@
 
     <!-- TODO: Update blank fragment layout -->
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Next"
-        android:id="@+id/button"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
-
     <EditText
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -27,24 +18,32 @@
     <EditText
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/editText2"
-        android:layout_below="@+id/editText"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp"
+        android:id="@+id/recipe_servings"
         android:layout_margin="20dp"
-        android:hint="Servings" />
+        android:layout_below="@+id/recipe_name"
+        android:layout_centerHorizontal="true"
+        android:hint="Servings"
+        />
 
     <EditText
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
         android:inputType="textMultiLine"
         android:ems="10"
-        android:id="@+id/editText3"
-        android:layout_below="@+id/editText2"
+        android:layout_margin="20dp"
+        android:id="@+id/recipe_description"
+        android:layout_below="@+id/recipe_servings"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="68dp"
-        android:layout_marginBottom="50dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:hint="Enter Recipe Steps" />
+        android:hint="Enter recipe description" />
+    <EditText
+        android:layout_width="fill_parent"
+        android:layout_height="150dp"
+        android:inputType="textMultiLine"
+        android:ems="10"
+        android:layout_margin="20dp"
+        android:id="@+id/recipe_directions"
+        android:hint="Enter Recipe Directions"
+        android:layout_below="@+id/recipe_description"
+ />
+
 </RelativeLayout>

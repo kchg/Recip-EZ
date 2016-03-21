@@ -6,12 +6,23 @@ package com.stringcheese.recipez.recip_ez;
 public class Ingredient {
     private int _id;
     private String _ingredientname;
+    private int _recipe_id;
+    private int _amount;
+    private int _amount_modifier;
 
     public Ingredient(){}
 
     public Ingredient(int id, String ingredientname){
         this._id = id;
         this._ingredientname = ingredientname;
+    }
+
+    //recipe_ingredients constructor
+    public Ingredient(int recipe_id, int ingredient_id, int amount, int amount_modifier){
+        this._id = ingredient_id;
+        this._recipe_id = recipe_id;
+        this._amount = amount;
+        this._amount_modifier = amount_modifier;
     }
 
     public Ingredient(String ingredientname){
