@@ -90,11 +90,8 @@ public class myDBHandler extends SQLiteOpenHelper {
         String dbString = "";
         SQLiteDatabase db = getWritableDatabase();
         String query = "SELECT * FROM " + INGREDIENTS_TABLE + ";";
-
         Cursor c = db.rawQuery(query, null);
-
         c.moveToFirst();
-
         while(!c.isAfterLast()){
             if(c.getString(c.getColumnIndex(COLUMN_INGREDIENT_NAME)) != null){
                 dbString += c.getString(c.getColumnIndex(COLUMN_INGREDIENT_NAME));

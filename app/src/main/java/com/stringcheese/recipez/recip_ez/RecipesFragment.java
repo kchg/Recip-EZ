@@ -28,8 +28,8 @@ public class RecipesFragment extends Fragment implements View.OnClickListener {
 
 
         View v = inflater.inflate(R.layout.fragment_recipes, container, false);
-        Button addrecipe = (Button) v.findViewById(R.id.add_recipe);
-        addrecipe.setOnClickListener(this);
+        //Button addrecipe = (Button) v.findViewById(R.id.);
+        //addrecipe.setOnClickListener(this);
         // Inflate the layout for this fragment
         return v;
 
@@ -39,7 +39,7 @@ public class RecipesFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.add_recipe:
-                Intent intent = new Intent(getActivity(), AddRecipe.class);
+                Intent intent = new Intent(getActivity(), add_recipes.class);
                 startActivity(intent);
                 break;
         }

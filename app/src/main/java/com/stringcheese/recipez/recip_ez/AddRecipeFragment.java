@@ -18,12 +18,20 @@ public class AddRecipeFragment extends Fragment {
         // Required empty public constructor
     }
 
+    public static AddRecipeFragment newInstance() {
+        Bundle args = new Bundle();
+        AddRecipeFragment fragment = new AddRecipeFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_add_recipe, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_add_recipes, container, false);
+        return rootView;
     }
 
 }

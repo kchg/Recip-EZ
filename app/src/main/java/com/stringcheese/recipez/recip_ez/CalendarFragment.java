@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CalendarView;
 
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
@@ -19,7 +20,6 @@ import java.util.Calendar;
  */
 public class CalendarFragment extends Fragment {
 
-
     public CalendarFragment() {
         // Required empty public constructor
     }
@@ -29,8 +29,6 @@ public class CalendarFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_calendar, container, false);
-        MaterialCalendarView calendar = (MaterialCalendarView) v.findViewById(R.id.calendarView);
-        Log.d("calendar", "Calendar visibility = " + calendar.getTopbarVisible());
 
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_calendar, container, false);

@@ -25,6 +25,10 @@
         <activity
             android:name=".AddIngredients"
             android:label="@string/title_activity_add_ingredients"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".add_recipes"
+            android:label="@string/title_activity_add_recipes"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

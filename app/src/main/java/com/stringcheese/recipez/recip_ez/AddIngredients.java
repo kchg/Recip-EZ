@@ -41,4 +41,12 @@ public class AddIngredients extends AppCompatActivity {
         String dbString = dbHandler.ingredientsToString();
         myText.setText(dbString);
     }
+
+    public static AddIngredients newInstance() {
+        
+        Bundle args = new Bundle();
+        
+        AddIngredients fragment = new AddIngredients();
+        return fragment;
+    }
 }

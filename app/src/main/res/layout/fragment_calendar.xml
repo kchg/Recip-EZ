@@ -8,13 +8,17 @@
     <!-- TODO: Update blank fragment layout -->
 
 
-    <com.prolificinteractive.materialcalendarview.MaterialCalendarView
-        android:id="@+id/calendarView"
-        android:layout_width="match_parent"
+    <CalendarView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        app:mcv_showOtherDates="none"
-        app:mcv_selectionColor="#00F"
-        app:mcv_headerTextAppearance="@style/CodeFont"
-        />
+        android:id="@+id/calendarView"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/listView2"
+        android:layout_below="@+id/calendarView"
+        android:layout_centerHorizontal="true" />
 </RelativeLayout>
