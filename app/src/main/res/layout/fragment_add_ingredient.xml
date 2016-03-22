@@ -28,16 +28,22 @@
         android:id="@+id/addbutton"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="126dp"
-        android:onClick="addButtonClicked"/>
+        android:layout_marginTop="126dp" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Delete Test"
-        android:id="@+id/button2"
+        android:id="@+id/deletebutton"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="104dp"
-        android:onClick="deleteButtonClicked" />
+        android:layout_marginBottom="104dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add Ingredient"
+        android:id="@+id/add_ingredient"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
 </RelativeLayout>

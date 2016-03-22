@@ -8,12 +8,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class AddIngredientFragment extends Fragment {
+public class AddIngredientFragment extends Fragment implements View.OnClickListener{
 
 
     public AddIngredientFragment() {
@@ -27,7 +28,8 @@ public class AddIngredientFragment extends Fragment {
         return fragment;
     }
 
-
+    public TextView myText;
+    public myDBHandler dbHandler;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -44,7 +46,48 @@ public class AddIngredientFragment extends Fragment {
         });
 
 */
+        myText = (TextView) rootView.findViewById(R.id.testtext);
+        Button add = (Button) rootView.findViewById(R.id.addbutton);
+        Button delete = (Button) rootView.findViewById(R.id.deletebutton);
+        Button addIngredient = (Button) rootView.findViewById(R.id.add_ingredient);
+
+        add.setOnClickListener(this);
+        delete.setOnClickListener(this);
+        addIngredient.setOnClickListener(this);
+        dbHandler = new myDBHandler(getActivity(), null, 1);
+        printDB();
         return rootView;
     }
 
+    public void addButtonClicked(View view){
+        Ingredient ingredient = new Ingredient("Cheese");
+        dbHandler.addIngredient(ingredient);
+        printDB();
+    }
+
+    public void deleteButtonClicked(View view){
+        dbHandler.deleteIngredient();
+        printDB();
+    }
+
+    public void printDB(){
+        String dbString = dbHandler.ingredientsToString();
+        myText.setText(dbString);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch(v.getId()){
+            case R.id.addbutton:
+                addButtonClicked(v);
+                break;
+            case R.id.deletebutton:
+                deleteButtonClicked(v);
+                break;
+            case R.id.add_ingredient:
+                Intent intent = new Intent(getActivity(), add_ingredient_helper.class);
+                startActivity(intent);
+                break;
+        }
+    }
 }
