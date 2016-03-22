@@ -10,6 +10,7 @@ public class Ingredient {
     private int _amount;
     private int _amount_modifier;
 
+
     public Ingredient(){}
 
     public Ingredient(int id, String ingredientname){
