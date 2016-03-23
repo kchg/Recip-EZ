@@ -13,6 +13,7 @@ public class add_ingredient_helper extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("Add Ingredients");
 
         setContentView(R.layout.activity_add_ingredient_helper);
 

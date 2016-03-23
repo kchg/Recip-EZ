@@ -31,7 +31,9 @@ public class myDBHandler extends SQLiteOpenHelper {
     private static final String RECIPES_TABLE = "recipes";
     private static final String COLUMN_RECIPE_ID = "recipe_id";
     private static final String COLUMN_RECIPE_NAME = "recipe_name";
+    private static final String COLUMN_RECIPE_SERVINGS = "recipe_servings";
     private static final String COLUMN_RECIPE_DESCRIPTION = "recipe_description";
+    private static final String COLUMN_RECIPE_DIRECTIONS = "recipe_directions";
 
     private static final String RECIPE_INGREDIENTS_TABLE = "recipe_ingredients";
     private static final String COLUMN_RECIPE_INGREDIENTS_AMOUNT = "amount";
@@ -40,7 +42,7 @@ public class myDBHandler extends SQLiteOpenHelper {
 
 
     private static final String CREATE_INGREDIENTS_TABLE = "CREATE table IF NOT EXISTS " + INGREDIENTS_TABLE + "(" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COLUMN_INGREDIENT_NAME + " TEXT );";
-    private static final String CREATE_RECIPES_TABLE = "CREATE TABLE IF NOT EXISTS " + RECIPES_TABLE + "(" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COLUMN_RECIPE_NAME + " TEXT, " + COLUMN_RECIPE_DESCRIPTION + " TEXT );";
+    private static final String CREATE_RECIPES_TABLE = "CREATE TABLE IF NOT EXISTS " + RECIPES_TABLE + "(" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COLUMN_RECIPE_NAME + " TEXT, " + COLUMN_RECIPE_SERVINGS + " INTEGER NOT NULL, " + COLUMN_RECIPE_DESCRIPTION + " TEXT, " + COLUMN_RECIPE_DIRECTIONS + " TEXT );";
     private static final String CREATE_RECIPE_INGREDIENTS_TABLE = "CREATE TABLE IF NOT EXISTS " + RECIPE_INGREDIENTS_TABLE + "(" + COLUMN_RECIPE_ID + " INTEGER NOT NULL, " + COLUMN_INGREDIENT_ID + " INTEGER NOT NULL, " + COLUMN_RECIPE_INGREDIENTS_AMOUNT  + " INTEGER, " + COLUMN_RECIPE_INGREDIENTS_AMOUNT_MODIFIER + " TEXT );";
 
     public myDBHandler(Context context, String name, int version){
@@ -82,8 +84,9 @@ public class myDBHandler extends SQLiteOpenHelper {
     public void addRecipe(Recipe r){
         ContentValues values = new ContentValues();
         values.put(COLUMN_RECIPE_NAME, r.get_recipename());
+        values.put(COLUMN_RECIPE_SERVINGS, r.get_servings());
         values.put(COLUMN_RECIPE_DESCRIPTION, r.get_description());
-        //TODO: handle arraylist of ingredients
+        values.put(COLUMN_RECIPE_DIRECTIONS, r.get_directions());
     }
 
     public String ingredientsToString(){

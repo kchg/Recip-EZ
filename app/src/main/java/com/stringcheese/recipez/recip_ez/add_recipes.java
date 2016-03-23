@@ -18,39 +18,40 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-/*TODO: add page titles*/
+import java.util.ArrayList;
+import java.util.List;
+
 public class add_recipes extends AppCompatActivity {
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
+    public myDBHandler dbHandler;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_recipes);
 
-
+        //set custom toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("Enter Recipe");
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
-
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.viewpager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
-
         //set tab view
         TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
         tabLayout.setupWithViewPager(mViewPager);
-
 
 /*
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -62,6 +63,8 @@ public class add_recipes extends AppCompatActivity {
             }
         });
 */
+        //initialize database stuff
+        dbHandler = new myDBHandler(this, null, 1);
     }
 
     @Override
@@ -80,14 +83,40 @@ public class add_recipes extends AppCompatActivity {
                 this.finish();
                 return true;
             case R.id.submitbutton:
-                //call method to submit
+                submitRecipe();
                 break;
             default:
                 return super.onOptionsItemSelected(item);
-
-
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    //method that is called when user clicks submit recipe; package everything together and insert into database
+    public void submitRecipe(){
+        String recipe_name;
+        Integer servings;
+        String description;
+        String directions;
+        Recipe r = new Recipe();
+
+        EditText editText = (EditText)findViewById(R.id.recipe_name);
+        recipe_name = editText.getText().toString().trim();
+
+        editText = (EditText)findViewById(R.id.recipe_servings);
+        servings = Integer.parseInt(editText.getText().toString());
+
+        editText = (EditText)findViewById(R.id.recipe_description);
+        description = editText.getText().toString().trim();
+
+        editText = (EditText)findViewById(R.id.recipe_directions);
+        directions = editText.getText().toString().trim();
+
+        r.set_recipename(recipe_name);
+        r.set_servings(servings);
+        r.set_description(description);
+        r.set_directions(directions);
+
+        dbHandler.addRecipe(r);
     }
 
     /**
@@ -99,6 +128,7 @@ public class add_recipes extends AppCompatActivity {
             super(fm);
         }
 
+        //switches the tab fragment
         @Override
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
@@ -118,6 +148,7 @@ public class add_recipes extends AppCompatActivity {
             return 2;
         }
 
+        //switches the tab title
         @Override
         public CharSequence getPageTitle(int position) {
             switch (position) {
@@ -129,4 +160,6 @@ public class add_recipes extends AppCompatActivity {
             return null;
         }
     }
+
+
 }

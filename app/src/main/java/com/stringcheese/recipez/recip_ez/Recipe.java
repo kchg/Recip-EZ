@@ -10,6 +10,7 @@ public class Recipe {
     private String _recipename;
     private String _description;
     private String _directions;
+    private int _servings;
 
     ArrayList ingredients = new ArrayList();
 
@@ -52,6 +53,22 @@ public class Recipe {
 
     public void set_description(String _description) {
         this._description = _description;
+    }
+
+    public String get_directions() {
+        return _directions;
+    }
+
+    public void set_directions(String _directions) {
+        this._directions = _directions;
+    }
+
+    public int get_servings() {
+        return _servings;
+    }
+
+    public void set_servings(int _servings) {
+        this._servings = _servings;
     }
 
     public ArrayList getIngredients() {
