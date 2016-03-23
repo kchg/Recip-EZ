@@ -21,7 +21,7 @@
         <activity
             android:name=".add_recipes"
             android:label="@string/title_activity_add_recipes"
-            android:theme="@style/AppTheme.NoActionBar"
+            android:theme="@style/AppTheme.NoActionBarTransparent"
             />
         <activity
             android:name=".add_ingredient_helper"
