@@ -122,8 +122,10 @@ public class MainActivity extends AppCompatActivity
             setTitle("Help");
         }
 
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+
     }
 }
