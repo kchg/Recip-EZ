@@ -30,6 +30,7 @@ public class AddIngredientFragment extends Fragment implements View.OnClickListe
 
     public TextView myText;
     public myDBHandler dbHandler;
+    public DataSource dataSource;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -54,24 +55,26 @@ public class AddIngredientFragment extends Fragment implements View.OnClickListe
         add.setOnClickListener(this);
         delete.setOnClickListener(this);
         addIngredient.setOnClickListener(this);
-        dbHandler = new myDBHandler(getActivity(), null, 1);
+        //dbHandler = new myDBHandler(getActivity());
+        dataSource = new DataSource(getContext());
+        dataSource.open();
         printDB();
         return rootView;
     }
 
     public void addButtonClicked(View view){
         Ingredient ingredient = new Ingredient("Cheese");
-        dbHandler.addIngredient(ingredient);
+        dataSource.addIngredient(ingredient);
         printDB();
     }
 
     public void deleteButtonClicked(View view){
-        dbHandler.deleteIngredient();
+        dataSource.deleteIngredient();
         printDB();
     }
 
     public void printDB(){
-        String dbString = dbHandler.ingredientsToString();
+        String dbString = dataSource.ingredientsToString();
         myText.setText(dbString);
     }
 
@@ -90,4 +93,17 @@ public class AddIngredientFragment extends Fragment implements View.OnClickListe
                 break;
         }
     }
+
+    @Override
+    public void onResume() {
+        dataSource.open();
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        dataSource.close();
+        super.onPause();
+    }
+
 }

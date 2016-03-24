@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,6 +31,7 @@ public class add_recipes extends AppCompatActivity {
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
     public myDBHandler dbHandler;
+    public DataSource dataSource;
 
 
     @Override
@@ -64,7 +66,9 @@ public class add_recipes extends AppCompatActivity {
         });
 */
         //initialize database stuff
-        dbHandler = new myDBHandler(this, null, 1);
+        dbHandler = new myDBHandler(this);
+        dataSource = new DataSource(this);
+        dataSource.open();
     }
 
     @Override
@@ -116,7 +120,11 @@ public class add_recipes extends AppCompatActivity {
         r.set_description(description);
         r.set_directions(directions);
 
-        dbHandler.addRecipe(r);
+        //TODO: retrieve list of ingredients from ui (should include ids) into a list, and place it into r
+
+        dataSource.addRecipe(r);
+
+        this.finish();
     }
 
     /**
