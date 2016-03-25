@@ -28,11 +28,13 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.lang.reflect.Array;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
 
 import static android.widget.Toast.LENGTH_LONG;
 
@@ -53,6 +55,7 @@ public class CalendarFragment extends Fragment {
     HashMap <GregorianCalendar,String[]> recipes;
     int flag;
 
+    File file;
     String filename;
 
 
@@ -62,7 +65,7 @@ public class CalendarFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_calendar, container, false);
 
         recipes = new HashMap<>();
-        filename = "calendar_recipes.txt";
+        filename = "calendarrecipes.txt";
 
         bText= (EditText) v.findViewById(R.id.bEditText);
         lText= (EditText) v.findViewById(R.id.lEditText);
@@ -83,20 +86,54 @@ public class CalendarFragment extends Fragment {
 
         flag = 0;
 
-        File file = getActivity().getFileStreamPath(filename);
+        file = getActivity().getFileStreamPath(filename);
 
         if(file.exists())
         {
             Toast.makeText(getActivity(), "File exists!", Toast.LENGTH_SHORT).show();
             try
             {
-                FileInputStream fileInputStream = new FileInputStream(file);
-                ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
-                Map readInRecipes = (HashMap)objectInputStream.readObject();
+                Scanner getLine = new Scanner(file);
+                Scanner tokenizer;
 
-                System.out.print(readInRecipes);
+                while (getLine.hasNextLine()) {
+                    String line = getLine.nextLine();
+                    tokenizer = new Scanner(line);
+                    System.out.println(line);
+
+                    while (tokenizer.hasNextInt()) {
+                        int y1 = tokenizer.nextInt();
+                        int m1 = tokenizer.nextInt();
+                        int d1 = tokenizer.nextInt();
+
+                        GregorianCalendar cal = new GregorianCalendar(y1, m1, d1);
+                        String[] meals = new String[3];
+                        while (tokenizer.hasNext()) {
+                            String type = tokenizer.next();
+                            String recipeName;
+                            if (type == "b") {
+                                recipeName = tokenizer.next();
+                                meals[0] = recipeName;
+                            }
+
+                            else if (type == "l") {
+                                recipeName = tokenizer.next();
+                                meals[1] = recipeName;
+                            }
+
+                            else if (type == "d") {
+                                recipeName = tokenizer.next();
+                                meals[2] = recipeName;
+                            }
+                        }
+                        recipes.put(cal, meals);
+                    }
+                    tokenizer.close();
+                }
+                getLine.close();
             }
-            catch(ClassNotFoundException | IOException | ClassCastException e) {
+
+            catch(IOException e) {
                 e.printStackTrace();
             }
         }
@@ -193,7 +230,7 @@ public class CalendarFragment extends Fragment {
         }
 
 
-        writeToFile(recipes);
+        writeToFile();
         save.setEnabled(false);
         edit.setEnabled(true);
     }
@@ -210,13 +247,32 @@ public class CalendarFragment extends Fragment {
 
     }
 
-    private void writeToFile(HashMap <GregorianCalendar,String[]> data) {
+    private void writeToFile() {
         try
         {
-            FileOutputStream fos = getActivity().openFileOutput(filename, Context.MODE_PRIVATE);
-            ObjectOutputStream oos = new ObjectOutputStream(fos);
-            oos.writeObject(data);
-            oos.close();
+            PrintWriter writer = new PrintWriter(file, "UTF-8");
+            for (GregorianCalendar gregObject: recipes.keySet()){
+
+                GregorianCalendar key = gregObject;
+                String[] value = recipes.get(gregObject);
+                int y = key.YEAR;
+                int m = key.MONTH;
+                int d = key.DAY_OF_MONTH;
+
+                writer.printf("%d %d %d ", y, m, d);
+                if (!value[0].equals("")) {
+                    writer.printf("b %s ", value[0]);
+                }
+                if (!value[1].equals("")) {
+                    writer.printf("l %s ", value[1]);
+                }
+                if (!value[2].equals("")) {
+                    writer.printf("d %s ", value[2]);
+                }
+
+                writer.print("\n");
+            }
+            writer.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
