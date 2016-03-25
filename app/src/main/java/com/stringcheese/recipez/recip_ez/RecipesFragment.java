@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -50,7 +51,6 @@ public class RecipesFragment extends Fragment implements View.OnClickListener {
         ListView listView = (ListView)v.findViewById(R.id.recipe_list);
         adapter = new ArrayAdapter<Recipe>(getContext(), android.R.layout.simple_list_item_1, values);
         listView.setAdapter(adapter);
-
         // Inflate the layout for this fragment
         return v;
     }

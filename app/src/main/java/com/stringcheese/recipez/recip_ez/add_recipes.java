@@ -35,6 +35,9 @@ public class add_recipes extends AppCompatActivity {
     public myDBHandler dbHandler;
     public DataSource dataSource;
 
+    AddIngredientFragment ingredientFragment;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,7 +129,11 @@ public class add_recipes extends AppCompatActivity {
 
         //TODO: retrieve list of ingredients from ui (should include ids) into a list, and place it into r
 
+
+
+
         dataSource.addRecipe(r);
+        ingredientFragment.addRecipeIngredients();
 
         try{
             wait(100);
@@ -155,7 +162,8 @@ public class add_recipes extends AppCompatActivity {
                 case 0:
                     return AddRecipeFragment.newInstance();
                 case 1:
-                    return AddIngredientFragment.newInstance();
+                    ingredientFragment = AddIngredientFragment.newInstance();
+                    return ingredientFragment;
             }
             return null;
         }

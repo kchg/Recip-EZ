@@ -1,20 +1,34 @@
 package com.stringcheese.recipez.recip_ez;
 
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class AddIngredientFragment extends Fragment implements View.OnClickListener{
+    ArrayList<Ingredient>ingredients;
+    private ArrayAdapter<Ingredient> adapter;
+    Recipe recipe = new Recipe();
 
 
     public AddIngredientFragment() {
@@ -45,52 +59,75 @@ public class AddIngredientFragment extends Fragment implements View.OnClickListe
                 startActivity(i);
             }
         });
-
 */
-        myText = (TextView) rootView.findViewById(R.id.testtext);
-        Button add = (Button) rootView.findViewById(R.id.addbutton);
-        Button delete = (Button) rootView.findViewById(R.id.deletebutton);
-        Button addIngredient = (Button) rootView.findViewById(R.id.add_ingredient);
 
-        add.setOnClickListener(this);
-        delete.setOnClickListener(this);
+
+
+
+        //Button addIngredient = (Button) rootView.findViewById(R.id.add_ingredient);
+        Button addIngredient = (Button) rootView.findViewById(R.id.add_button);
         addIngredient.setOnClickListener(this);
+
+        ingredients = new ArrayList<Ingredient>();
+        //addIngredient.setOnClickListener(this);
         //dbHandler = new myDBHandler(getActivity());
         dataSource = new DataSource(getContext());
         dataSource.open();
-        printDB();
+
+
+        ListView listView = (ListView)rootView.findViewById(R.id.ingredient_list);
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int pos, long id) {
+                ingredients.remove(pos);
+                Log.v("long clicked","pos: " + pos);
+                adapter.notifyDataSetChanged();
+                return true;
+            }
+        });
+
+
+
         return rootView;
     }
 
     public void addButtonClicked(View view){
-        Ingredient ingredient = new Ingredient("Cheese");
-        dataSource.addIngredient(ingredient);
-        printDB();
-    }
-
-    public void deleteButtonClicked(View view){
-        dataSource.deleteIngredient();
-        printDB();
+        //retrieve from textfield
+        EditText textfield = (EditText) getView().findViewById(R.id.input_field);
+        EditText amountfield = (EditText) getView().findViewById(R.id.amount_field);
+        String text = "";
+        int amount = 0;
+        try{
+            Log.d("ITEXT", text = textfield.getText().toString());
+            amount = Integer.parseInt(amountfield.getText().toString());
+            Log.d("ITEXT", text);
+        }
+        catch(Exception e){
+            Log.d("ITEXT", "caught an exception");
+            Log.d("ITEXT", e.toString());
+        }
+        Ingredient i = new Ingredient(text);
+        i.set_amount(amount);
+        ingredients.add(i);
+        refreshList();
     }
 
     public void printDB(){
-        String dbString = dataSource.ingredientsToString();
-        myText.setText(dbString);
+
     }
 
     @Override
     public void onClick(View v) {
         switch(v.getId()){
-            case R.id.addbutton:
+            case R.id.add_button:
                 addButtonClicked(v);
                 break;
-            case R.id.deletebutton:
-                deleteButtonClicked(v);
-                break;
+/*
             case R.id.add_ingredient:
                 Intent intent = new Intent(getActivity(), add_ingredient_helper.class);
                 startActivity(intent);
                 break;
+     */
         }
     }
 
@@ -106,4 +143,14 @@ public class AddIngredientFragment extends Fragment implements View.OnClickListe
         super.onPause();
     }
 
+    public void refreshList(){
+        ListView listView = (ListView)getView().findViewById(R.id.ingredient_list);
+        adapter = new ArrayAdapter<Ingredient>(getContext(), android.R.layout.simple_list_item_1, ingredients);
+        listView.setAdapter(adapter);
+    }
+
+    public void addRecipeIngredients(){
+        //pass in list of ingredient objects
+        dataSource.addRecipeIngredients(ingredients);
+    }
 }

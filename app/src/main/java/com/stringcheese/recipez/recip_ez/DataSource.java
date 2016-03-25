@@ -19,6 +19,7 @@ import android.widget.ListView;
 public class DataSource {
     private SQLiteDatabase db;
     private myDBHandler dbHelper;
+    long recipe_id;
     private String[] recipeColumns = { dbHelper.COLUMN_RECIPE_NAME, dbHelper.COLUMN_RECIPE_SERVINGS,
             dbHelper.COLUMN_RECIPE_DESCRIPTION, dbHelper.COLUMN_RECIPE_DIRECTIONS };
     //TODO: ingredients
@@ -49,8 +50,6 @@ public class DataSource {
 
     //add a recipe with its ingredients
     public void addRecipe(Recipe r){
-        long recipe_id;
-        ArrayList<Ingredient> ingredients = new ArrayList<Ingredient>();
         ContentValues values = new ContentValues();
 
         values.put(dbHelper.COLUMN_RECIPE_NAME, r.get_recipename());
@@ -63,34 +62,26 @@ public class DataSource {
 
         //String sql = "INSERT INTO " + "recipes" + " VALUES ( null, ?, 1, ?, ?)";
         //db.execSQL(sql,new String[]{r.get_recipename(), r.get_description(), r.get_directions()});
-
-        ingredients = r.get_ingredients(); //should hold ingredient objects; each including their own ids
-
-        for(Ingredient ingredient:ingredients){
-            //TODO: add each combination of recipe_id and ingreient_id into the recipe_ingredients table
-            //TODO: retrieve ingredient_id from object
-        }
-
         //update the listview
+
 
 }
 
 
 
 
-    public String ingredientsToString(){
-        String dbString = "";
+    public ArrayList<Ingredient> ingredientsToList(){
+        String buffer;
+        ArrayList<Ingredient>ingredients = new ArrayList<Ingredient>();
         String query = "SELECT * FROM " + dbHelper.INGREDIENTS_TABLE + ";";
         Cursor c = db.rawQuery(query, null);
         c.moveToFirst();
         while(!c.isAfterLast()){
-            if(c.getString(c.getColumnIndex(dbHelper.COLUMN_INGREDIENT_NAME)) != null){
-                dbString += c.getString(c.getColumnIndex(dbHelper.COLUMN_INGREDIENT_NAME));
-                dbString += "\n";
-            }
+            Ingredient i = new Ingredient();
+            i.set_ingredientname(c.getString((c.getColumnIndex((myDBHandler.COLUMN_INGREDIENT_NAME)))));
             c.moveToNext();
         }
-        return dbString;
+        return ingredients;
     }
 
     public List<Recipe> getAllRecipes(){
@@ -113,5 +104,29 @@ public class DataSource {
         cursor.close();
         return recipes;
 
+    }
+
+    public void addRecipeIngredients(ArrayList<Ingredient>ingredients){
+
+        for(Ingredient i: ingredients){
+            /*
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(dbHelper.COLUMN_RECIPE_ID, recipe_id);
+            contentValues.put(dbHelper.COLUMN_RECIPE_INGREDIENTS_AMOUNT, i.get_amount());
+            db.insert(dbHelper.RECIPE_INGREDIENTS_TABLE, null, contentValues);
+            */
+
+
+            Log.d("ING", i.get_ingredientname());
+            ContentValues values = new ContentValues();
+            values.put(dbHelper.COLUMN_INGREDIENT_NAME, i.get_ingredientname());
+            db.insert(dbHelper.INGREDIENTS_TABLE, null, values);
+
+
+            
+            //String sql = "INSERT INTO " + "recipe_ingredients" + " VALUES ( ?, null, ?, null)";
+            //db.execSQL(sql,new String[]{Long.toString(recipe_id), Integer.toString(i.get_amount())});
+
+        }
     }
 }

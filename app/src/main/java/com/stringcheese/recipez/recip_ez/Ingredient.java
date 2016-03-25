@@ -34,6 +34,11 @@ public class Ingredient {
         this._id = _id;
     }
 
+    @Override
+    public String toString() {
+        return this._amount + " ounces " + this._ingredientname;
+    }
+
     public void set_ingredientname(String _ingredientname) {
         this._ingredientname = _ingredientname;
     }
@@ -44,5 +49,29 @@ public class Ingredient {
 
     public String get_ingredientname() {
         return _ingredientname;
+    }
+
+    public int get_amount() {
+        return _amount;
+    }
+
+    public void set_amount(int _amount) {
+        this._amount = _amount;
+    }
+
+    public int get_amount_modifier() {
+        return _amount_modifier;
+    }
+
+    public void set_amount_modifier(int _amount_modifier) {
+        this._amount_modifier = _amount_modifier;
+    }
+
+    public int get_recipe_id() {
+        return _recipe_id;
+    }
+
+    public void set_recipe_id(int _recipe_id) {
+        this._recipe_id = _recipe_id;
     }
 }
