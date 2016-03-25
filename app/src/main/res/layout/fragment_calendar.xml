@@ -11,13 +11,14 @@
 
     <CalendarView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="288dp"
         android:id="@+id/calendarView"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_weight="0.18" />
 
     <EditText
         android:layout_width="match_parent"
@@ -36,12 +37,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/dEditText"
-        android:layout_gravity="center_horizontal"
         android:hint="Dinner"/>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="83dp">
+        android:layout_height="66dp">
 
         <Button
             style="?android:attr/buttonStyleSmall"

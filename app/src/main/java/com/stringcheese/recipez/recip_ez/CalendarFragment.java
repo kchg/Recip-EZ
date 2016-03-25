@@ -19,9 +19,20 @@ import android.widget.CalendarView.OnDateChangeListener;
 
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.OutputStreamWriter;
 import java.lang.reflect.Array;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.Map;
 
 import static android.widget.Toast.LENGTH_LONG;
 
@@ -35,11 +46,14 @@ public class CalendarFragment extends Fragment {
 
     Button test;
     CalendarView cal;
-    Long date;
+    GregorianCalendar date, selectedDate;
     int i = 0;
     EditText bText, lText, dText;
     Button save, edit;
-    ArrayMap <Long,String[]> recipes;
+    HashMap <GregorianCalendar,String[]> recipes;
+    int flag;
+
+    String filename;
 
 
     @Override
@@ -47,15 +61,52 @@ public class CalendarFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_calendar, container, false);
 
-        recipes = new ArrayMap<>();
+        recipes = new HashMap<>();
+        filename = "calendar_recipes.txt";
+
         bText= (EditText) v.findViewById(R.id.bEditText);
         lText= (EditText) v.findViewById(R.id.lEditText);
         dText= (EditText) v.findViewById(R.id.dEditText);
 
-        cal = (CalendarView) v.findViewById(R.id.calendarView);
-        date = cal.getDate();
 
-        save = (Button) v.findViewById(R.id.saveButton);
+        cal = (CalendarView) v.findViewById(R.id.calendarView);
+
+        GregorianCalendar gregorianCalendar=new GregorianCalendar();
+        String month=String.valueOf(gregorianCalendar.get(GregorianCalendar.MONTH));
+        String day=String.valueOf(gregorianCalendar.get(GregorianCalendar.DAY_OF_MONTH));
+        String year=String.valueOf(gregorianCalendar.get(GregorianCalendar.YEAR));
+
+        int y = Integer.parseInt(year);
+        int d = Integer.parseInt(day);
+        int m = Integer.parseInt(month);
+        date = new GregorianCalendar(y, m, d);
+
+        flag = 0;
+
+        File file = getActivity().getFileStreamPath(filename);
+
+        if(file.exists())
+        {
+            Toast.makeText(getActivity(), "File exists!", Toast.LENGTH_SHORT).show();
+            try
+            {
+                FileInputStream fileInputStream = new FileInputStream(file);
+                ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+                Map readInRecipes = (HashMap)objectInputStream.readObject();
+
+                System.out.print(readInRecipes);
+            }
+            catch(ClassNotFoundException | IOException | ClassCastException e) {
+                e.printStackTrace();
+            }
+        }
+        else
+        {
+            Toast.makeText(getActivity(), "File does not exist!!", Toast.LENGTH_SHORT).show();
+            file = new File(getActivity().getFilesDir(), filename);
+        }
+
+            save = (Button) v.findViewById(R.id.saveButton);
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -64,6 +115,8 @@ public class CalendarFragment extends Fragment {
         });
 
         edit = (Button) v.findViewById(R.id.editButton);
+        edit.setEnabled(false);
+
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -74,7 +127,36 @@ public class CalendarFragment extends Fragment {
         cal.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
-                date = cal.getDate();
+
+                selectedDate = new GregorianCalendar(year, month, dayOfMonth);
+
+                if(recipes.get(selectedDate)!=null)
+                {
+                    bText.setEnabled(false);
+                    lText.setEnabled(false);
+                    dText.setEnabled(false);
+                    save.setEnabled(false);
+                    edit.setEnabled(true);
+
+                    //update the next field that need to be there
+                    String[] s = recipes.get(selectedDate);
+                    bText.setText(s[0]);
+                    lText.setText(s[1]);
+                    dText.setText(s[2]);
+
+                }
+
+                else {
+                    bText.setText("");
+                    lText.setText("");
+                    dText.setText("");
+
+                    bText.setEnabled(true);
+                    lText.setEnabled(true);
+                    dText.setEnabled(true);
+                    save.setEnabled(true);
+                    edit.setEnabled(false);
+                }
             }
         });
         // Inflate the layout for this fragment
@@ -101,13 +183,43 @@ public class CalendarFragment extends Fragment {
         recipeArr[1] = l;
         recipeArr[2] = d;
 
-        recipes.put(date, recipeArr);
-        save.setEnabled(false);
+        if (flag == 0) {
+            recipes.put(date, recipeArr);
+            flag = 1;
+        }
 
+        else {
+            recipes.put(selectedDate, recipeArr);
+        }
+
+
+        writeToFile(recipes);
+        save.setEnabled(false);
+        edit.setEnabled(true);
     }
 
     public void editButtonClicked(View view) {
        // Toast.makeText(getActivity(), "Edit was pressed!", Toast.LENGTH_SHORT).show();
+
+        bText.setEnabled(true);
+        lText.setEnabled(true);
+        dText.setEnabled(true);
+        save.setEnabled(true);
+        edit.setEnabled(false);
+
+
+    }
+
+    private void writeToFile(HashMap <GregorianCalendar,String[]> data) {
+        try
+        {
+            FileOutputStream fos = getActivity().openFileOutput(filename, Context.MODE_PRIVATE);
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(data);
+            oos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }
