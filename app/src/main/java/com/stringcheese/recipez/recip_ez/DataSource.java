@@ -8,13 +8,18 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
 /**
  * Created by Kevin on 3/24/2016.
  */
 public class DataSource {
     private SQLiteDatabase db;
     private myDBHandler dbHelper;
-    private String[] recipeColumns = { dbHelper.COLUMN_RECIPE_NAME,
+    private String[] recipeColumns = { dbHelper.COLUMN_RECIPE_NAME, dbHelper.COLUMN_RECIPE_SERVINGS,
             dbHelper.COLUMN_RECIPE_DESCRIPTION, dbHelper.COLUMN_RECIPE_DIRECTIONS };
     //TODO: ingredients
 
@@ -56,6 +61,9 @@ public class DataSource {
         //clean input
         recipe_id = db.insert(dbHelper.RECIPES_TABLE, null, values); //this should return the autoincremented recipe id
 
+        //String sql = "INSERT INTO " + "recipes" + " VALUES ( null, ?, 1, ?, ?)";
+        //db.execSQL(sql,new String[]{r.get_recipename(), r.get_description(), r.get_directions()});
+
         ingredients = r.get_ingredients(); //should hold ingredient objects; each including their own ids
 
         for(Ingredient ingredient:ingredients){
@@ -65,7 +73,7 @@ public class DataSource {
 
         //update the listview
 
-    }
+}
 
 
 
@@ -93,9 +101,10 @@ public class DataSource {
         cursor.moveToFirst();
         while(!cursor.isAfterLast()){
             Recipe r = new Recipe();
-            r.set_id(cursor.getLong(0));
-            r.set_recipename(cursor.getString(1));
-            r.set_servings(cursor.getInt(2));
+            //r.set_id(cursor.getLong(cursor.getColumnIndex(myDBHandler.COLUMN_ID)));
+            r.set_recipename(cursor.getString(cursor.getColumnIndex(myDBHandler.COLUMN_RECIPE_NAME)));
+            Log.d("TAG", r.get_recipename());
+            r.set_servings(cursor.getInt(cursor.getColumnIndex(myDBHandler.COLUMN_RECIPE_SERVINGS)));
            // r.set_description(cursor.getString(3));
            // r.set_directions(cursor.getString(4));
             recipes.add(r);

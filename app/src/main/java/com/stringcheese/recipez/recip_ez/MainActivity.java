@@ -1,8 +1,10 @@
 package com.stringcheese.recipez.recip_ez;
 
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -39,11 +41,15 @@ public class MainActivity extends AppCompatActivity
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        initDB();
+        //initDB();
     }
 
     public void initDB(){
-
+        myDBHandler dbHandler = new myDBHandler(this);
+        SQLiteDatabase db;
+        db = dbHandler.getWritableDatabase();
+        db.execSQL("DROP TABLE IF EXISTS recipes");
+        dbHandler.onCreate(db);
     }
     @Override
     public void onBackPressed() {
@@ -76,13 +82,26 @@ public class MainActivity extends AppCompatActivity
 
         return super.onOptionsItemSelected(item);
     }
-
+    public int id;
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
-        int id = item.getItemId();
+        id = item.getItemId();
+        changeFragment(id);
 
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+
+        return true;
+    }
+    @Override
+    public void onResume(){
+        super.onResume();
+        changeFragment(id);
+    }
+
+    public void changeFragment(int id){
         if (id == R.id.nav_home) {
             MainFragment fragment = new MainFragment();
             android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
@@ -121,9 +140,6 @@ public class MainActivity extends AppCompatActivity
             fragmentTransaction.commit();
             setTitle("Help");
         }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
     }
+
 }

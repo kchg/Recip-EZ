@@ -4,6 +4,7 @@ package com.stringcheese.recipez.recip_ez;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -38,6 +40,11 @@ public class RecipesFragment extends Fragment implements View.OnClickListener {
         dataSource.open();
 
         List<Recipe> values = dataSource.getAllRecipes();
+        List<String> names = new ArrayList<String>();
+        for(Recipe r: values){
+            Log.d("TAG", "item");
+            Log.d("TAG", r.toString());
+        }
 
         //set recipe list adapter
         ListView listView = (ListView)v.findViewById(R.id.recipe_list);
@@ -60,7 +67,19 @@ public class RecipesFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onResume() {
-        adapter.notifyDataSetChanged();
         super.onResume();
+        adapter.notifyDataSetChanged();
+        Log.d("RESUME", "resumed");
+        try{
+            wait(100);
+        }
+        catch(Exception e){
+        }
+        updateList();
+    }
+
+    public void updateList(){
+
+        adapter.notifyDataSetChanged();
     }
 }
