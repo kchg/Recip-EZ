@@ -116,6 +116,7 @@ public class CalendarFragment extends Fragment {
 
         edit = (Button) v.findViewById(R.id.editButton);
         edit.setEnabled(false);
+
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
