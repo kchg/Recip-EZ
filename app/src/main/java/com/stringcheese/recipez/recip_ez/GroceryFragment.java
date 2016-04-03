@@ -12,18 +12,16 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 
-
-/**
- * A simple {@link Fragment} subclass.
- */
 public class GroceryFragment extends Fragment {
-    ArrayList<Ingredient>ingredients;
+    //TODO: show a compiled grocery list, with all of the amounts added together and functionality to cross out items
+
+    //adapter you can use to fill the listview; use recyclerview if you want it to look better
     private ArrayAdapter<Ingredient>adapter;
+
+    //use to retrieve data from database
     private DataSource dataSource;
 
-
     public GroceryFragment() {
-        // Required empty public constructor
     }
 
 
@@ -31,22 +29,19 @@ public class GroceryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_grocery, container, false);
+
         ListView lv = (ListView) v.findViewById(R.id.ingredients_list);
-        ingredients = new ArrayList<Ingredient>();
         dataSource = new DataSource(getContext());
-        dataSource.open();
-        populate();
-        adapter = new ArrayAdapter<Ingredient>(getContext(), android.R.layout.simple_list_item_1, ingredients);
-        lv.setAdapter(adapter);
+        dataSource.open(); //opens the database
 
+        //the recipe_ingredients table is set up with recipe_id, ingredient_id, amount, and amount modifier
+        //amount modifier is one of {"oz", "cup", "gram", "tsp", "tbsp", "mL", "count"}, you'll probably have to do conversion between these to add them together
+        //join with the ingredients table to get the ingredient name
 
-        // Inflate the layout for this fragment
+        //lv.setAdapter(adapter);
+
         return v;
 
     }
 
-    //populate the listview
-    public void populate(){
-        ingredients = dataSource.ingredientsToList();
-    }
 }

@@ -51,21 +51,10 @@ public class AddIngredientFragment extends Fragment implements View.OnClickListe
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_add_ingredient, container, false);
-/*
-        Button next = (Button) rootView.findViewById(R.id.add_recipe);
-        next.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(getActivity(), add_recipes.class);
-                startActivity(i);
-            }
-        });
-*/
-
 
         //Spinner
         Spinner modifier = (Spinner) rootView.findViewById(R.id.modifer_spinner);
-        String[] types = new String[]{"Oz", "Cup", "Gram", "Tsp", "Tbsp", "mL", "Count"};
+        String[] types = new String[]{"oz", "cup", "gram", "tsp", "tbsp", "mL", "count"};
         ArrayAdapter<String> modadapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_dropdown_item, types);
         modifier.setAdapter(modadapter);
 
@@ -105,11 +94,11 @@ public class AddIngredientFragment extends Fragment implements View.OnClickListe
 
         String text = "";
         String modifier = "";
-        int amount = 0;
+        float amount = 0;
         try{
             text = textfield.getText().toString();
             modifier = spinner.getSelectedItem().toString();
-            amount = Integer.parseInt(amountfield.getText().toString());
+            amount = Float.parseFloat(amountfield.getText().toString());
             Log.d("ITEXT", text);
         }
         catch(Exception e){

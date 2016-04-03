@@ -3,6 +3,7 @@ package com.stringcheese.recipez.recip_ez;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -33,8 +34,9 @@ public class RecipesFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_recipes, container, false);
-        Button addrecipe = (Button) v.findViewById(R.id.add_recipe);
-        addrecipe.setOnClickListener(this);
+
+        FloatingActionButton addrecipebutton = (FloatingActionButton) v.findViewById(R.id.fab_add);
+        addrecipebutton.setOnClickListener(this);
 
         //used to get data from db
         dataSource = new DataSource(getContext());
@@ -58,7 +60,7 @@ public class RecipesFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.add_recipe:
+            case R.id.fab_add:
                 Intent intent = new Intent(getActivity(), add_recipes.class);
                 startActivity(intent);
                 break;

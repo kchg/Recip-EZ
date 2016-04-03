@@ -7,7 +7,7 @@ public class Ingredient {
     private int _id;
     private String _ingredientname;
     private int _recipe_id;
-    private int _amount;
+    private float _amount;
     private String _amount_modifier;
 
 
@@ -19,7 +19,7 @@ public class Ingredient {
     }
 
     //recipe_ingredients constructor
-    public Ingredient(int recipe_id, int ingredient_id, int amount, String amount_modifier){
+    public Ingredient(int recipe_id, int ingredient_id, float amount, String amount_modifier){
         this._id = ingredient_id;
         this._recipe_id = recipe_id;
         this._amount = amount;
@@ -51,11 +51,11 @@ public class Ingredient {
         return _ingredientname;
     }
 
-    public int get_amount() {
+    public float get_amount() {
         return _amount;
     }
 
-    public void set_amount(int _amount) {
+    public void set_amount(float _amount) {
         this._amount = _amount;
     }
 
