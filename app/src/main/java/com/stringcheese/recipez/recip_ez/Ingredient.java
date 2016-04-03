@@ -8,7 +8,7 @@ public class Ingredient {
     private String _ingredientname;
     private int _recipe_id;
     private int _amount;
-    private int _amount_modifier;
+    private String _amount_modifier;
 
 
     public Ingredient(){}
@@ -19,7 +19,7 @@ public class Ingredient {
     }
 
     //recipe_ingredients constructor
-    public Ingredient(int recipe_id, int ingredient_id, int amount, int amount_modifier){
+    public Ingredient(int recipe_id, int ingredient_id, int amount, String amount_modifier){
         this._id = ingredient_id;
         this._recipe_id = recipe_id;
         this._amount = amount;
@@ -36,7 +36,7 @@ public class Ingredient {
 
     @Override
     public String toString() {
-        return this._amount + " ounces " + this._ingredientname;
+        return this._amount + " " + this._amount_modifier + "s " + this._ingredientname;
     }
 
     public void set_ingredientname(String _ingredientname) {
@@ -59,11 +59,11 @@ public class Ingredient {
         this._amount = _amount;
     }
 
-    public int get_amount_modifier() {
+    public String get_amount_modifier() {
         return _amount_modifier;
     }
 
-    public void set_amount_modifier(int _amount_modifier) {
+    public void set_amount_modifier(String _amount_modifier) {
         this._amount_modifier = _amount_modifier;
     }
 

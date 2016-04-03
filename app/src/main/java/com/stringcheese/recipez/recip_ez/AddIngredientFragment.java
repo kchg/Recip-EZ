@@ -16,6 +16,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -62,7 +63,11 @@ public class AddIngredientFragment extends Fragment implements View.OnClickListe
 */
 
 
-
+        //Spinner
+        Spinner modifier = (Spinner) rootView.findViewById(R.id.modifer_spinner);
+        String[] types = new String[]{"Oz", "Cup", "Gram", "Tsp", "Tbsp", "mL", "Count"};
+        ArrayAdapter<String> modadapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_dropdown_item, types);
+        modifier.setAdapter(modadapter);
 
         //Button addIngredient = (Button) rootView.findViewById(R.id.add_ingredient);
         Button addIngredient = (Button) rootView.findViewById(R.id.add_button);
@@ -91,14 +96,19 @@ public class AddIngredientFragment extends Fragment implements View.OnClickListe
         return rootView;
     }
 
+    //button clicked to add the ingredient
     public void addButtonClicked(View view){
         //retrieve from textfield
         EditText textfield = (EditText) getView().findViewById(R.id.input_field);
         EditText amountfield = (EditText) getView().findViewById(R.id.amount_field);
+        Spinner spinner = (Spinner) getView().findViewById(R.id.modifer_spinner);
+
         String text = "";
+        String modifier = "";
         int amount = 0;
         try{
-            Log.d("ITEXT", text = textfield.getText().toString());
+            text = textfield.getText().toString();
+            modifier = spinner.getSelectedItem().toString();
             amount = Integer.parseInt(amountfield.getText().toString());
             Log.d("ITEXT", text);
         }
@@ -108,8 +118,14 @@ public class AddIngredientFragment extends Fragment implements View.OnClickListe
         }
         Ingredient i = new Ingredient(text);
         i.set_amount(amount);
+        i.set_amount_modifier(modifier);
         ingredients.add(i);
         refreshList();
+    }
+
+    //TODO: add method for deleting ingredient
+    public void deleteButtonClicked(View view){
+
     }
 
     public void printDB(){
@@ -149,8 +165,8 @@ public class AddIngredientFragment extends Fragment implements View.OnClickListe
         listView.setAdapter(adapter);
     }
 
-    public void addRecipeIngredients(){
+    public void addRecipeIngredients(long recipe_id){
         //pass in list of ingredient objects
-        dataSource.addRecipeIngredients(ingredients);
+        dataSource.addRecipeIngredients(recipe_id, ingredients);
     }
 }

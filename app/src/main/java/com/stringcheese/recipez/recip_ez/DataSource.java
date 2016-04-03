@@ -49,7 +49,7 @@ public class DataSource {
     }
 
     //add a recipe with its ingredients
-    public void addRecipe(Recipe r){
+    public long addRecipe(Recipe r){
         ContentValues values = new ContentValues();
 
         values.put(dbHelper.COLUMN_RECIPE_NAME, r.get_recipename());
@@ -64,7 +64,7 @@ public class DataSource {
         //db.execSQL(sql,new String[]{r.get_recipename(), r.get_description(), r.get_directions()});
         //update the listview
 
-
+        return recipe_id;
 }
 
 
@@ -106,26 +106,32 @@ public class DataSource {
 
     }
 
-    public void addRecipeIngredients(ArrayList<Ingredient>ingredients){
+    public void addRecipeIngredients(long recipe_id, ArrayList<Ingredient>ingredients){
 
         for(Ingredient i: ingredients){
-            /*
-            ContentValues contentValues = new ContentValues();
-            contentValues.put(dbHelper.COLUMN_RECIPE_ID, recipe_id);
-            contentValues.put(dbHelper.COLUMN_RECIPE_INGREDIENTS_AMOUNT, i.get_amount());
-            db.insert(dbHelper.RECIPE_INGREDIENTS_TABLE, null, contentValues);
-            */
-
-
-            Log.d("ING", i.get_ingredientname());
+            long ingredient_id;
             ContentValues values = new ContentValues();
-            values.put(dbHelper.COLUMN_INGREDIENT_NAME, i.get_ingredientname());
-            db.insert(dbHelper.INGREDIENTS_TABLE, null, values);
+            values.put(dbHelper.COLUMN_RECIPE_ID, recipe_id);
 
+            //check to see if the ingredient exists in the ingredients table
+            String sql = "SELECT * FROM " + dbHelper.INGREDIENTS_TABLE + " WHERE " + dbHelper.COLUMN_INGREDIENT_NAME + " ='" + i.get_ingredientname() + "' ;";
+            Cursor cursor = db.rawQuery(sql, null);
+            //get the id
+            if(cursor!=null && cursor.getCount() > 0){
+                cursor.moveToFirst();
+                ingredient_id = cursor.getLong(cursor.getColumnIndex("_id"));
+            }
+            //add to the table
+            else{
+                ContentValues ivalues = new ContentValues();
+                ivalues.put(dbHelper.COLUMN_INGREDIENT_NAME, i.get_ingredientname());
+                ingredient_id = db.insert(dbHelper.INGREDIENTS_TABLE, null, ivalues);
+            }
 
-            
-            //String sql = "INSERT INTO " + "recipe_ingredients" + " VALUES ( ?, null, ?, null)";
-            //db.execSQL(sql,new String[]{Long.toString(recipe_id), Integer.toString(i.get_amount())});
+            values.put(dbHelper.COLUMN_INGREDIENT_ID, ingredient_id);
+            values.put(dbHelper.COLUMN_RECIPE_INGREDIENTS_AMOUNT, i.get_amount());
+            values.put(dbHelper.COLUMN_RECIPE_INGREDIENTS_AMOUNT_MODIFIER, i.get_amount_modifier());
+            db.insert(dbHelper.RECIPE_INGREDIENTS_TABLE, null, values);
 
         }
     }

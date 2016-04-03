@@ -130,10 +130,8 @@ public class add_recipes extends AppCompatActivity {
         //TODO: retrieve list of ingredients from ui (should include ids) into a list, and place it into r
 
 
-
-
-        dataSource.addRecipe(r);
-        ingredientFragment.addRecipeIngredients();
+        long recipe_id = dataSource.addRecipe(r);
+        ingredientFragment.addRecipeIngredients(recipe_id);
 
         try{
             wait(100);
