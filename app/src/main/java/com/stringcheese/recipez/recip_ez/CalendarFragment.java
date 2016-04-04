@@ -30,6 +30,7 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
@@ -90,7 +91,6 @@ public class CalendarFragment extends Fragment {
 
         if(file.exists())
         {
-            Toast.makeText(getActivity(), "File exists!", Toast.LENGTH_SHORT).show();
             try
             {
                 Scanner getLine = new Scanner(file);
@@ -107,6 +107,7 @@ public class CalendarFragment extends Fragment {
                         int d1 = tokenizer.nextInt();
 
                         GregorianCalendar cal = new GregorianCalendar(y1, m1, d1);
+
                         String[] meals = new String[3];
                         while (tokenizer.hasNext()) {
                             String type = tokenizer.next();
@@ -139,21 +140,39 @@ public class CalendarFragment extends Fragment {
         }
         else
         {
-            Toast.makeText(getActivity(), "File does not exist!!", Toast.LENGTH_SHORT).show();
             file = new File(getActivity().getFilesDir(), filename);
         }
 
-            save = (Button) v.findViewById(R.id.saveButton);
+        save = (Button) v.findViewById(R.id.saveButton);
+        edit = (Button) v.findViewById(R.id.editButton);
+        edit.setEnabled(false);
+
+        if(recipes.get(date)!=null)
+        {
+            bText.setEnabled(false);
+            lText.setEnabled(false);
+            dText.setEnabled(false);
+            save.setEnabled(false);
+            edit.setEnabled(true);
+
+            //update the next field that need to be there
+            String[] s = recipes.get(date);
+
+            bText.setText(s[0]);
+            lText.setText(s[1]);
+            dText.setText(s[2]);
+
+        }
+        else {
+            Toast.makeText(getActivity(), "Not working...", Toast.LENGTH_SHORT).show();
+        }
+
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 saveButtonClicked(v);
             }
         });
-
-        edit = (Button) v.findViewById(R.id.editButton);
-        edit.setEnabled(false);
-
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -165,6 +184,7 @@ public class CalendarFragment extends Fragment {
             @Override
             public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
 
+                //Toast.makeText(getActivity(), "Date = " + year + " " + month + " " + dayOfMonth, Toast.LENGTH_SHORT).show();
                 selectedDate = new GregorianCalendar(year, month, dayOfMonth);
 
                 if(recipes.get(selectedDate)!=null)
@@ -251,13 +271,11 @@ public class CalendarFragment extends Fragment {
         try
         {
             PrintWriter writer = new PrintWriter(file, "UTF-8");
-            for (GregorianCalendar gregObject: recipes.keySet()){
-
-                GregorianCalendar key = gregObject;
+            for (GregorianCalendar gregObject: recipes.keySet()) {
                 String[] value = recipes.get(gregObject);
-                int y = key.YEAR;
-                int m = key.MONTH;
-                int d = key.DAY_OF_MONTH;
+                int y = gregObject.get(Calendar.YEAR);
+                int m = gregObject.get(Calendar.MONTH);
+                int d = gregObject.get(Calendar.DAY_OF_MONTH);
 
                 writer.printf("%d %d %d ", y, m, d);
                 if (!value[0].equals("")) {
