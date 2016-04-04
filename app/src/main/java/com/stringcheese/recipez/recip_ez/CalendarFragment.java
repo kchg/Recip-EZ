@@ -89,6 +89,7 @@ public class CalendarFragment extends Fragment {
 
         file = getActivity().getFileStreamPath(filename);
 
+
         if(file.exists())
         {
             try
