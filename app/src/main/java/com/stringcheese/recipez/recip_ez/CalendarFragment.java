@@ -75,10 +75,10 @@ public class CalendarFragment extends Fragment {
 
         cal = (CalendarView) v.findViewById(R.id.calendarView);
 
-        GregorianCalendar gregorianCalendar=new GregorianCalendar();
-        String month=String.valueOf(gregorianCalendar.get(GregorianCalendar.MONTH));
-        String day=String.valueOf(gregorianCalendar.get(GregorianCalendar.DAY_OF_MONTH));
-        String year=String.valueOf(gregorianCalendar.get(GregorianCalendar.YEAR));
+        GregorianCalendar gregorianCalendar = new GregorianCalendar();
+        String month = String.valueOf(gregorianCalendar.get(GregorianCalendar.MONTH));
+        String day = String.valueOf(gregorianCalendar.get(GregorianCalendar.DAY_OF_MONTH));
+        String year = String.valueOf(gregorianCalendar.get(GregorianCalendar.YEAR));
 
         int y = Integer.parseInt(year);
         int d = Integer.parseInt(day);
@@ -100,7 +100,6 @@ public class CalendarFragment extends Fragment {
                 while (getLine.hasNextLine()) {
                     String line = getLine.nextLine();
                     tokenizer = new Scanner(line);
-                    System.out.println(line);
 
                     while (tokenizer.hasNextInt()) {
                         int y1 = tokenizer.nextInt();
@@ -111,19 +110,23 @@ public class CalendarFragment extends Fragment {
 
                         String[] meals = new String[3];
                         while (tokenizer.hasNext()) {
+                            Toast.makeText(getActivity(), "Meals while loop", Toast.LENGTH_SHORT).show();
                             String type = tokenizer.next();
                             String recipeName;
                             if (type == "b") {
                                 recipeName = tokenizer.next();
+                                Toast.makeText(getActivity(), "Breakfast is running", Toast.LENGTH_SHORT).show();
                                 meals[0] = recipeName;
                             }
 
                             else if (type == "l") {
+                                Toast.makeText(getActivity(), "Lunch is running", Toast.LENGTH_SHORT).show();
                                 recipeName = tokenizer.next();
                                 meals[1] = recipeName;
                             }
 
                             else if (type == "d") {
+                                Toast.makeText(getActivity(), "Dinner is running", Toast.LENGTH_SHORT).show();
                                 recipeName = tokenizer.next();
                                 meals[2] = recipeName;
                             }
@@ -166,6 +169,11 @@ public class CalendarFragment extends Fragment {
         }
         else {
             Toast.makeText(getActivity(), "Not working...", Toast.LENGTH_SHORT).show();
+        }
+
+        for (GregorianCalendar key : recipes.keySet()) {
+            String value[] = recipes.get(key);
+            System.out.println(key.get(Calendar.YEAR) + " " + key.get(Calendar.MONTH) + " " + key.get(Calendar.DAY_OF_MONTH) + " " + value[0] + " " + value[1] + " " + value[2]);
         }
 
         save.setOnClickListener(new View.OnClickListener() {
