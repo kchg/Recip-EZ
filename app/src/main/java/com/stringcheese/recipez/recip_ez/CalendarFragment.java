@@ -92,7 +92,6 @@ public class CalendarFragment extends Fragment {
 
         if(file.exists())
         {
-            Toast.makeText(getActivity(),"file exists div",Toast.LENGTH_SHORT).show();
             try
             {
                 Scanner getLine = new Scanner(file);
@@ -108,31 +107,28 @@ public class CalendarFragment extends Fragment {
                         int m1 = tokenizer.nextInt();
                         int d1 = tokenizer.nextInt();
 
-                        GregorianCalendar cale = new GregorianCalendar(y1, m1, d1);
+                        GregorianCalendar cal = new GregorianCalendar(y1, m1, d1);
 
                         String[] meals = new String[3];
                         while (tokenizer.hasNext()) {
                             String type = tokenizer.next();
                             String recipeName;
-
-                            System.out.printf("Type is %s%n",type);
-
-                            if (type.equals("b")) {
+                            if (type == "b") {
                                 recipeName = tokenizer.next();
                                 meals[0] = recipeName;
                             }
 
-                            else if (type.equals("l")) {
+                            else if (type == "l") {
                                 recipeName = tokenizer.next();
                                 meals[1] = recipeName;
                             }
 
-                            else if (type.equals("d")) {
+                            else if (type == "d") {
                                 recipeName = tokenizer.next();
                                 meals[2] = recipeName;
                             }
                         }
-                        recipes.put(cale, meals);
+                        recipes.put(cal, meals);
                     }
                     tokenizer.close();
                 }
@@ -162,7 +158,6 @@ public class CalendarFragment extends Fragment {
 
             //update the next field that need to be there
             String[] s = recipes.get(date);
-
 
             bText.setText(s[0]);
             lText.setText(s[1]);
