@@ -186,6 +186,8 @@ public class CalendarFragment extends Fragment {
             public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
 
                 //Toast.makeText(getActivity(), "Date = " + year + " " + month + " " + dayOfMonth, Toast.LENGTH_SHORT).show();
+
+                flag = 1;
                 selectedDate = new GregorianCalendar(year, month, dayOfMonth);
 
                 if(recipes.get(selectedDate)!=null)
