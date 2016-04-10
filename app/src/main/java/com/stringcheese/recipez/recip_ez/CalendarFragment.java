@@ -107,28 +107,28 @@ public class CalendarFragment extends Fragment {
                         int m1 = tokenizer.nextInt();
                         int d1 = tokenizer.nextInt();
 
-                        GregorianCalendar cal = new GregorianCalendar(y1, m1, d1);
+                        GregorianCalendar cale = new GregorianCalendar(y1, m1, d1);
 
                         String[] meals = new String[3];
                         while (tokenizer.hasNext()) {
                             String type = tokenizer.next();
                             String recipeName;
-                            if (type == "b") {
+                            if (type.equals("b")) {
                                 recipeName = tokenizer.next();
                                 meals[0] = recipeName;
                             }
 
-                            else if (type == "l") {
+                            else if (type.equals("l")) {
                                 recipeName = tokenizer.next();
                                 meals[1] = recipeName;
                             }
 
-                            else if (type == "d") {
+                            else if (type.equals("d")) {
                                 recipeName = tokenizer.next();
                                 meals[2] = recipeName;
                             }
                         }
-                        recipes.put(cal, meals);
+                        recipes.put(cale, meals);
                     }
                     tokenizer.close();
                 }
