@@ -108,28 +108,73 @@ public class CalendarFragment extends Fragment {
                         int m1 = tokenizer.nextInt();
                         int d1 = tokenizer.nextInt();
 
-                        GregorianCalendar cale = new GregorianCalendar(y1, m1, d1);
+                        GregorianCalendar date = new GregorianCalendar(y1, m1, d1);
 
-                        String[] meals = new String[3];
+                        MealData data = new MealData();
                         while (tokenizer.hasNext()) {
                             String type = tokenizer.next();
-                            String recipeName;
+
                             if (type.equals("b")) {
-                                recipeName = tokenizer.next();
-                                meals[0] = recipeName;
+                                String recipeName = "";
+
+                                while (tokenizer.hasNext()) {
+                                    String tmp = tokenizer.next();
+
+                                    if (tmp.equals("l") || tmp.equals("d")) {
+                                        type = tmp;
+                                        break;
+                                    }
+
+                                    if (tmp.equals("|")) {
+                                        data.setBreakfastItems(recipeName);
+                                        CalendarRecipes.recipes.put(date, data);
+                                        recipeName = "";
+                                        continue;
+                                    }
+
+                                    recipeName += " " + tmp;
+                                }
                             }
 
-                            else if (type.equals("l")) {
-                                recipeName = tokenizer.next();
-                                meals[1] = recipeName;
+                            if (type.equals("l")) {
+                                String recipeName = "";
+
+                                while (tokenizer.hasNext()) {
+                                    String tmp = tokenizer.next();
+
+                                    if (tmp.equals("d")) {
+                                        type = tmp;
+                                        break;
+                                    }
+
+                                    if (tmp.equals("|")) {
+                                        data.setLunchItems(recipeName);
+                                        CalendarRecipes.recipes.put(date, data);
+                                        recipeName = "";
+                                        continue;
+                                    }
+
+                                    recipeName += " " + tmp;
+                                }
                             }
 
-                            else if (type.equals("d")) {
-                                recipeName = tokenizer.next();
-                                meals[2] = recipeName;
+                            if (type.equals("d")) {
+                                String recipeName = "";
+
+                                while (tokenizer.hasNext()) {
+                                    String tmp = tokenizer.next();
+
+                                    if (tmp.equals("|")) {
+                                        data.setDinnerItems(recipeName);
+                                        CalendarRecipes.recipes.put(date, data);
+                                        recipeName = "";
+                                        continue;
+                                    }
+
+                                    recipeName += " " + tmp;
+                                }
                             }
                         }
-                        data.recipes.put(cale, meals);
                     }
                     tokenizer.close();
                 }
@@ -149,7 +194,7 @@ public class CalendarFragment extends Fragment {
         edit = (Button) v.findViewById(R.id.editButton);
         edit.setEnabled(false);
 
-        if(data.recipes.get(date)!=null)
+        if(CalendarRecipes.recipes.get(date)!=null)
         {
             bText.setEnabled(false);
             lText.setEnabled(false);
@@ -158,7 +203,7 @@ public class CalendarFragment extends Fragment {
             edit.setEnabled(true);
 
             //update the next field that need to be there
-            String[] s = data.recipes.get(date);
+            String[] s = CalendarRecipes.recipes.get(date);
 
             bText.setText(s[0]);
             lText.setText(s[1]);
@@ -191,7 +236,7 @@ public class CalendarFragment extends Fragment {
                 flag = 1;
                 selectedDate = new GregorianCalendar(year, month, dayOfMonth);
 
-                if(data.recipes.get(selectedDate)!=null)
+                if(CalendarRecipes.recipes.get(selectedDate)!=null)
                 {
                     bText.setEnabled(false);
                     lText.setEnabled(false);
@@ -200,7 +245,7 @@ public class CalendarFragment extends Fragment {
                     edit.setEnabled(true);
 
                     //update the next field that need to be there
-                    String[] s = data.recipes.get(selectedDate);
+                    String[] s = CalendarRecipes.recipes.get(selectedDate);
                     bText.setText(s[0]);
                     lText.setText(s[1]);
                     dText.setText(s[2]);
@@ -245,12 +290,12 @@ public class CalendarFragment extends Fragment {
         recipeArr[2] = d;
 
         if (flag == 0) {
-            data.recipes.put(date, recipeArr);
+            CalendarRecipes.recipes.put(date, recipeArr);
             flag = 1;
         }
 
         else {
-            data.recipes.put(selectedDate, recipeArr);
+            CalendarRecipes.recipes.put(selectedDate, recipeArr);
         }
 
 
@@ -280,11 +325,11 @@ public class CalendarFragment extends Fragment {
 
                 MealData values = CalendarRecipes.recipes.get(gregObject);
 
-                int y = gregObject.get(Calendar.YEAR);
-                int m = gregObject.get(Calendar.MONTH);
-                int d = gregObject.get(Calendar.DAY_OF_MONTH);
+                int year = gregObject.get(Calendar.YEAR);
+                int month = gregObject.get(Calendar.MONTH);
+                int day = gregObject.get(Calendar.DAY_OF_MONTH);
 
-                writer.printf("%d %d %d ", y, m, d);
+                writer.printf("%d %d %d ", year, month, day);
 
                 for (String b : values.getBreakfastItems()) {
                     if (bflag == 1) {
