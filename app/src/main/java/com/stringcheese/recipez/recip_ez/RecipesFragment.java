@@ -24,7 +24,7 @@ import java.util.List;
  * A simple {@link Fragment} subclass.
  */
 public class RecipesFragment extends Fragment implements View.OnClickListener {
-    private DataSource dataSource;
+    public DataSource dataSource;
     private ArrayAdapter<Recipe> adapter;
 
     public RecipesFragment() {
@@ -53,6 +53,15 @@ public class RecipesFragment extends Fragment implements View.OnClickListener {
         ListView listView = (ListView)v.findViewById(R.id.recipe_list);
         adapter = new ArrayAdapter<Recipe>(getContext(), android.R.layout.simple_list_item_1, values);
         listView.setAdapter(adapter);
+        listView.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Recipe selectedItem = (Recipe) adapter.getItem(position);
+                Intent i = new Intent(getActivity(), RecipeDetails.class);
+                i.putExtra("recipe_name",selectedItem.get_recipename());
+                startActivity(i);
+            }
+        });
         // Inflate the layout for this fragment
         return v;
     }
