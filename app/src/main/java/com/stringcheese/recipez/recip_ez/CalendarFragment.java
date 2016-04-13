@@ -191,38 +191,6 @@ public class CalendarFragment extends Fragment implements View.OnClickListener{
         }
 
 
-        if(CalendarRecipes.recipes.get(date)!=null)
-        {
-            bText.setEnabled(false);
-            lText.setEnabled(false);
-            dText.setEnabled(false);
-            save.setEnabled(false);
-            edit.setEnabled(true);
-
-            //update the next field that need to be there
-            String[] s = recipes.get(date);
-
-            bText.setText(s[0]);
-            lText.setText(s[1]);
-            dText.setText(s[2]);
-
-        }
-        else {
-            Toast.makeText(getActivity(), "Not working...", Toast.LENGTH_SHORT).show();
-        }
-
-        save.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                saveButtonClicked(v);
-            }
-        });
-        edit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                editButtonClicked(v);
-            }
-        });
 
         cal.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
@@ -237,77 +205,30 @@ public class CalendarFragment extends Fragment implements View.OnClickListener{
                 {
 
                     //update the next field that need to be there
-                    String[] s = recipes.get(selectedDate);
-                    bText.setText(s[0]);
-                    lText.setText(s[1]);
-                    dText.setText(s[2]);
+
 
                 }
 
                 else {
-                    bText.setText("");
-                    lText.setText("");
-                    dText.setText("");
 
-                    bText.setEnabled(true);
-                    lText.setEnabled(true);
-                    dText.setEnabled(true);
-                    save.setEnabled(true);
-                    edit.setEnabled(false);
                 }
             }
         });
         // Inflate the layout for this fragment
         return v;
     }
-
-    public void saveButtonClicked(View view) {
-        Toast.makeText(getActivity(), "Your recipes are saved!" , Toast.LENGTH_SHORT).show();
-
-        String b,l,d;
-        String[] recipeArr;
-
-        b = bText.getText().toString();
-        bText.setEnabled(false);
-
-        l = lText.getText().toString();
-        lText.setEnabled(false);
-
-        d = dText.getText().toString();
-        dText.setEnabled(false);
-
-        recipeArr = new String[3];
-        recipeArr[0] = b;
-        recipeArr[1] = l;
-        recipeArr[2] = d;
-
-        if (flag == 0) {
-            recipes.put(date, recipeArr);
-            flag = 1;
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.cal_add:
+                Intent intent = new Intent(getActivity(), meals_display.class);
+                startActivity(intent);
+                break;
         }
-
-        else {
-            recipes.put(selectedDate, recipeArr);
-        }
-
-
-        writeToFile();
-        save.setEnabled(false);
-        edit.setEnabled(true);
     }
 
-    public void editButtonClicked(View view) {
-       // Toast.makeText(getActivity(), "Edit was pressed!", Toast.LENGTH_SHORT).show();
 
-        /*
-        bText.setEnabled(true);
-        lText.setEnabled(true);
-        dText.setEnabled(true);
-        save.setEnabled(true);
-        edit.setEnabled(false);
-        */
 
-    }
 
     private void writeToFile() {
         try
