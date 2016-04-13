@@ -30,6 +30,7 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -53,19 +54,20 @@ public class CalendarFragment extends Fragment {
     int i = 0;
     EditText bText, lText, dText;
     Button save, edit;
-    HashMap <GregorianCalendar,String[]> recipes;
+    CalendarRecipes data;
+
+
     int flag;
 
     File file;
     String filename;
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_calendar, container, false);
 
-        recipes = new HashMap<>();
+        data = new CalendarRecipes();
         filename = "calendarrecipes.txt";
 
         bText= (EditText) v.findViewById(R.id.bEditText);
@@ -128,7 +130,7 @@ public class CalendarFragment extends Fragment {
                                 meals[2] = recipeName;
                             }
                         }
-                        recipes.put(cale, meals);
+                        data.recipes.put(cale, meals);
                     }
                     tokenizer.close();
                 }
@@ -148,7 +150,7 @@ public class CalendarFragment extends Fragment {
         edit = (Button) v.findViewById(R.id.editButton);
         edit.setEnabled(false);
 
-        if(recipes.get(date)!=null)
+        if(data.recipes.get(date)!=null)
         {
             bText.setEnabled(false);
             lText.setEnabled(false);
@@ -157,7 +159,7 @@ public class CalendarFragment extends Fragment {
             edit.setEnabled(true);
 
             //update the next field that need to be there
-            String[] s = recipes.get(date);
+            String[] s = data.recipes.get(date);
 
             bText.setText(s[0]);
             lText.setText(s[1]);
@@ -190,7 +192,7 @@ public class CalendarFragment extends Fragment {
                 flag = 1;
                 selectedDate = new GregorianCalendar(year, month, dayOfMonth);
 
-                if(recipes.get(selectedDate)!=null)
+                if(data.recipes.get(selectedDate)!=null)
                 {
                     bText.setEnabled(false);
                     lText.setEnabled(false);
@@ -199,7 +201,7 @@ public class CalendarFragment extends Fragment {
                     edit.setEnabled(true);
 
                     //update the next field that need to be there
-                    String[] s = recipes.get(selectedDate);
+                    String[] s = data.recipes.get(selectedDate);
                     bText.setText(s[0]);
                     lText.setText(s[1]);
                     dText.setText(s[2]);
@@ -244,12 +246,12 @@ public class CalendarFragment extends Fragment {
         recipeArr[2] = d;
 
         if (flag == 0) {
-            recipes.put(date, recipeArr);
+            data.recipes.put(date, recipeArr);
             flag = 1;
         }
 
         else {
-            recipes.put(selectedDate, recipeArr);
+            data.recipes.put(selectedDate, recipeArr);
         }
 
 
@@ -274,8 +276,8 @@ public class CalendarFragment extends Fragment {
         try
         {
             PrintWriter writer = new PrintWriter(file, "UTF-8");
-            for (GregorianCalendar gregObject: recipes.keySet()) {
-                String[] value = recipes.get(gregObject);
+            for (GregorianCalendar gregObject: data.recipes.keySet()) {
+                String[] value = data.recipes.get(gregObject);
                 int y = gregObject.get(Calendar.YEAR);
                 int m = gregObject.get(Calendar.MONTH);
                 int d = gregObject.get(Calendar.DAY_OF_MONTH);
