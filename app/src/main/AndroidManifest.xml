@@ -12,7 +12,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".SplashScreen"
-            android:label="@string/app_name" >
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -32,12 +32,12 @@
         <activity
             android:name=".add_recipes"
             android:label="@string/title_activity_add_recipes"
-            android:theme="@style/AppTheme.NoActionBarTransparent"
-            />
+            android:theme="@style/AppTheme.NoActionBarTransparent" />
+        <activity android:name=".add_ingredient_helper"></activity>
         <activity
-            android:name=".add_ingredient_helper"
-            >
-        </activity>
+            android:name=".RecipeDetails"
+            android:label="@string/title_activity_recipe_details"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
