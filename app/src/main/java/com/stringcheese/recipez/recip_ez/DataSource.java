@@ -3,6 +3,7 @@ package com.stringcheese.recipez.recip_ez;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.DownloadManager;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -12,11 +13,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 /**
  * Created by Kevin on 3/24/2016.
  */
 public class DataSource {
+    private Recipe currentRecipe;
     private SQLiteDatabase db;
     private myDBHandler dbHelper;
     long recipe_id;
@@ -41,6 +44,31 @@ public class DataSource {
         ContentValues values = new ContentValues();
         values.put(dbHelper.COLUMN_INGREDIENT_NAME, i.get_ingredientname());
         db.insert(dbHelper.INGREDIENTS_TABLE, null, values);
+    }
+    public void showRecipe(Recipe r){
+        currentRecipe = r;
+
+    }
+
+    public Recipe getRecipeDetails(String name){
+        Recipe r = new Recipe();
+        r.set_recipename(name);
+        String query = "SELECT * FROM " + myDBHandler.RECIPES_TABLE + "WHERE " + myDBHandler.COLUMN_RECIPE_NAME + " = " + name + " ;" ;
+        Cursor cursor = db.rawQuery(query, null);
+
+        if (cursor.moveToFirst()) {
+
+                long _id = cursor.getLong(cursor.getColumnIndex(myDBHandler.COLUMN_ID));
+                int _serving = cursor.getInt(cursor.getColumnIndex(myDBHandler.COLUMN_RECIPE_SERVINGS));
+                String _description = cursor.getString(cursor.getColumnIndex(myDBHandler.COLUMN_RECIPE_DESCRIPTION));
+                String _directions = cursor.getString(cursor.getColumnIndex(myDBHandler.COLUMN_RECIPE_DIRECTIONS));
+
+                r.set_id(_id);
+                r.set_servings(_serving);
+                r.set_description(_description);
+                r.set_directions(_directions);
+            }
+        return r;
     }
 
     //TODO: right now this just deletes everything

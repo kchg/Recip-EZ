@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.IllegalFormatPrecisionException;
 import java.util.List;
 
 /*
@@ -107,6 +108,7 @@ public class myDBHandler extends SQLiteOpenHelper {
             //TODO: retrieve ingredient_id from object
         }
     }
+
 
 
 
