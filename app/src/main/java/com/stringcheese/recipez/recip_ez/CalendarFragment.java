@@ -54,7 +54,6 @@ public class CalendarFragment extends Fragment {
     int i = 0;
     EditText bText, lText, dText;
     Button save, edit;
-    CalendarRecipes data;
 
 
     int flag;
@@ -67,7 +66,7 @@ public class CalendarFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_calendar, container, false);
 
-        data = new CalendarRecipes();
+
         filename = "calendarrecipes.txt";
 
         bText= (EditText) v.findViewById(R.id.bEditText);
@@ -276,21 +275,42 @@ public class CalendarFragment extends Fragment {
         try
         {
             PrintWriter writer = new PrintWriter(file, "UTF-8");
-            for (GregorianCalendar gregObject: data.recipes.keySet()) {
-                String[] value = data.recipes.get(gregObject);
+            for (GregorianCalendar gregObject: CalendarRecipes.recipes.keySet()) {
+                int bflag = 1, lflag = 1, dflag = 1;
+
+                MealData values = CalendarRecipes.recipes.get(gregObject);
+
                 int y = gregObject.get(Calendar.YEAR);
                 int m = gregObject.get(Calendar.MONTH);
                 int d = gregObject.get(Calendar.DAY_OF_MONTH);
 
                 writer.printf("%d %d %d ", y, m, d);
-                if (!value[0].equals("")) {
-                    writer.printf("b %s ", value[0]);
+
+                for (String b : values.getBreakfastItems()) {
+                    if (bflag == 1) {
+                        writer.printf("b ");
+                        bflag = 0;
+                    }
+
+                    writer.printf("%s |", b);
                 }
-                if (!value[1].equals("")) {
-                    writer.printf("l %s ", value[1]);
+
+                for (String l : values.getBreakfastItems()) {
+                    if (lflag == 1) {
+                        writer.printf("l ");
+                        lflag = 0;
+                    }
+
+                    writer.printf("%s |", l);
                 }
-                if (!value[2].equals("")) {
-                    writer.printf("d %s ", value[2]);
+
+                for (String d : values.getBreakfastItems()) {
+                    if (dflag == 1) {
+                        writer.printf("d ");
+                        dflag = 0;
+                    }
+
+                    writer.printf("%s |", d);
                 }
 
                 writer.print("\n");
