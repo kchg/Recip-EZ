@@ -203,23 +203,18 @@ public class CalendarFragment extends Fragment {
             edit.setEnabled(true);
 
             //update the next field that need to be there
-            String[] s = CalendarRecipes.recipes.get(date);
+            /*String[] s = CalendarRecipes.recipes.get(date);
 
             bText.setText(s[0]);
             lText.setText(s[1]);
             dText.setText(s[2]);
-
+*/
         }
         else {
             Toast.makeText(getActivity(), "Not working...", Toast.LENGTH_SHORT).show();
         }
 
-        save.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                saveButtonClicked(v);
-            }
-        });
+
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -245,11 +240,11 @@ public class CalendarFragment extends Fragment {
                     edit.setEnabled(true);
 
                     //update the next field that need to be there
-                    String[] s = CalendarRecipes.recipes.get(selectedDate);
+                   /* String[] s = CalendarRecipes.recipes.get(selectedDate);
                     bText.setText(s[0]);
                     lText.setText(s[1]);
                     dText.setText(s[2]);
-
+*/
                 }
 
                 else {
@@ -267,41 +262,6 @@ public class CalendarFragment extends Fragment {
         });
         // Inflate the layout for this fragment
         return v;
-    }
-
-    public void saveButtonClicked(View view) {
-        Toast.makeText(getActivity(), "Your recipes are saved!" , Toast.LENGTH_SHORT).show();
-
-        String b,l,d;
-        String[] recipeArr;
-
-        b = bText.getText().toString();
-        bText.setEnabled(false);
-
-        l = lText.getText().toString();
-        lText.setEnabled(false);
-
-        d = dText.getText().toString();
-        dText.setEnabled(false);
-
-        recipeArr = new String[3];
-        recipeArr[0] = b;
-        recipeArr[1] = l;
-        recipeArr[2] = d;
-
-        if (flag == 0) {
-            CalendarRecipes.recipes.put(date, recipeArr);
-            flag = 1;
-        }
-
-        else {
-            CalendarRecipes.recipes.put(selectedDate, recipeArr);
-        }
-
-
-        writeToFile();
-        save.setEnabled(false);
-        edit.setEnabled(true);
     }
 
     public void editButtonClicked(View view) {
