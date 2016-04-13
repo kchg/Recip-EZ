@@ -1,7 +1,9 @@
 package com.stringcheese.recipez.recip_ez;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.util.ArrayMap;
 import android.util.Log;
@@ -40,7 +42,7 @@ import java.util.Scanner;
 import static android.widget.Toast.LENGTH_LONG;
 
 
-public class CalendarFragment extends Fragment {
+public class CalendarFragment extends Fragment implements View.OnClickListener{
 
 
     public CalendarFragment() {
@@ -51,7 +53,7 @@ public class CalendarFragment extends Fragment {
     CalendarView cal;
     GregorianCalendar date, selectedDate;
     int i = 0;
-    EditText bText, lText, dText;
+
     Button save, edit;
     HashMap <GregorianCalendar,String[]> recipes;
     int flag;
@@ -68,12 +70,10 @@ public class CalendarFragment extends Fragment {
         recipes = new HashMap<>();
         filename = "calendarrecipes.txt";
 
-        bText= (EditText) v.findViewById(R.id.bEditText);
-        lText= (EditText) v.findViewById(R.id.lEditText);
-        dText= (EditText) v.findViewById(R.id.dEditText);
-
-
         cal = (CalendarView) v.findViewById(R.id.calendarView);
+
+        FloatingActionButton addMealsButton = (FloatingActionButton) v.findViewById(R.id.cal_add);
+        addMealsButton.setOnClickListener((View.OnClickListener) this);
 
         GregorianCalendar gregorianCalendar=new GregorianCalendar();
         String month=String.valueOf(gregorianCalendar.get(GregorianCalendar.MONTH));
@@ -144,42 +144,14 @@ public class CalendarFragment extends Fragment {
             file = new File(getActivity().getFilesDir(), filename);
         }
 
-        save = (Button) v.findViewById(R.id.saveButton);
-        edit = (Button) v.findViewById(R.id.editButton);
-        edit.setEnabled(false);
 
         if(recipes.get(date)!=null)
         {
-            bText.setEnabled(false);
-            lText.setEnabled(false);
-            dText.setEnabled(false);
-            save.setEnabled(false);
-            edit.setEnabled(true);
-
-            //update the next field that need to be there
-            String[] s = recipes.get(date);
-
-            bText.setText(s[0]);
-            lText.setText(s[1]);
-            dText.setText(s[2]);
 
         }
         else {
             Toast.makeText(getActivity(), "Not working...", Toast.LENGTH_SHORT).show();
         }
-
-        save.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                saveButtonClicked(v);
-            }
-        });
-        edit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                editButtonClicked(v);
-            }
-        });
 
         cal.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
@@ -190,35 +162,22 @@ public class CalendarFragment extends Fragment {
 
                 if(recipes.get(selectedDate)!=null)
                 {
-                    bText.setEnabled(false);
-                    lText.setEnabled(false);
-                    dText.setEnabled(false);
-                    save.setEnabled(false);
-                    edit.setEnabled(true);
 
-                    //update the next field that need to be there
-                    String[] s = recipes.get(selectedDate);
-                    bText.setText(s[0]);
-                    lText.setText(s[1]);
-                    dText.setText(s[2]);
-
-                }
-
-                else {
-                    bText.setText("");
-                    lText.setText("");
-                    dText.setText("");
-
-                    bText.setEnabled(true);
-                    lText.setEnabled(true);
-                    dText.setEnabled(true);
-                    save.setEnabled(true);
-                    edit.setEnabled(false);
                 }
             }
         });
         // Inflate the layout for this fragment
         return v;
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.cal_add:
+                Intent intent = new Intent(getActivity(), meals_display.class);
+                startActivity(intent);
+                break;
+        }
     }
 
     public void saveButtonClicked(View view) {
@@ -227,6 +186,7 @@ public class CalendarFragment extends Fragment {
         String b,l,d;
         String[] recipeArr;
 
+        /*
         b = bText.getText().toString();
         bText.setEnabled(false);
 
@@ -235,7 +195,8 @@ public class CalendarFragment extends Fragment {
 
         d = dText.getText().toString();
         dText.setEnabled(false);
-
+        */
+/*
         recipeArr = new String[3];
         recipeArr[0] = b;
         recipeArr[1] = l;
@@ -250,7 +211,7 @@ public class CalendarFragment extends Fragment {
             recipes.put(selectedDate, recipeArr);
         }
 
-
+*/
         writeToFile();
         save.setEnabled(false);
         edit.setEnabled(true);
@@ -259,12 +220,13 @@ public class CalendarFragment extends Fragment {
     public void editButtonClicked(View view) {
        // Toast.makeText(getActivity(), "Edit was pressed!", Toast.LENGTH_SHORT).show();
 
+        /*
         bText.setEnabled(true);
         lText.setEnabled(true);
         dText.setEnabled(true);
         save.setEnabled(true);
         edit.setEnabled(false);
-
+        */
 
     }
 
