@@ -1,20 +1,34 @@
 package com.stringcheese.recipez.recip_ez;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.PopupWindow;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class meals_display extends AppCompatActivity {
+
+    Button btnClosePopup;
+    Button btnBf, btnLunch, btnDin;
+    Recipe selectedItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,9 +52,73 @@ public class meals_display extends AppCompatActivity {
 
         //set recipe list adapter
         ListView listView = (ListView)this.findViewById(R.id.recipe_list);
-        ListAdapter adapter;
+        final ListAdapter adapter;
         adapter = new ArrayAdapter<Recipe>(this, android.R.layout.simple_list_item_1, values);
         listView.setAdapter(adapter);
+        listView.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                selectedItem = (Recipe) adapter.getItem(position);
+                initiatePopupWindow();
+            }
+        });
     }
+    private PopupWindow pwindo;
+
+    private void initiatePopupWindow() {
+        try {
+            // We need to get the instance of the LayoutInflater
+            LayoutInflater inflater = (LayoutInflater) this
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View layout = inflater.inflate(R.layout.activity_screen_popup,
+                    (ViewGroup) findViewById(R.id.popup_element));
+            pwindo = new PopupWindow(layout, 600, 600, true);
+            pwindo.showAtLocation(layout, Gravity.CENTER, 0, 0);
+
+            btnBf = (Button) layout.findViewById(R.id.breakfastButton);
+            btnBf.setOnClickListener(breakfast_button_click_listener);
+
+            btnLunch = (Button) layout.findViewById(R.id.lunchButton);
+            btnLunch.setOnClickListener(lunch_button_click_listener);
+
+            btnDin = (Button) layout.findViewById(R.id.dinnerButton);
+            btnDin.setOnClickListener(dinner_button_click_listener);
+
+            btnClosePopup = (Button) layout.findViewById(R.id.btn_close_popup);
+            btnClosePopup.setOnClickListener(cancel_button_click_listener);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    private View.OnClickListener breakfast_button_click_listener = new View.OnClickListener() {
+        public void onClick(View v) {
+            String print = selectedItem.get_recipename();
+            Toast.makeText(getApplicationContext(),"You have "+print+" for breakfast.",Toast.LENGTH_SHORT).show();
+            pwindo.dismiss();
+        }
+    };
+
+    private View.OnClickListener lunch_button_click_listener = new View.OnClickListener() {
+        public void onClick(View v) {
+            String print = selectedItem.get_recipename();
+            Toast.makeText(getApplicationContext(),"You have "+print+" for lunch.",Toast.LENGTH_SHORT).show();
+            pwindo.dismiss();
+        }
+    };
+
+    private View.OnClickListener dinner_button_click_listener = new View.OnClickListener() {
+        public void onClick(View v) {
+            String print = selectedItem.get_recipename();
+            Toast.makeText(getApplicationContext(),"You have "+print+" for dinner.",Toast.LENGTH_SHORT).show();
+            pwindo.dismiss();
+        }
+    };
+
+    private View.OnClickListener cancel_button_click_listener = new View.OnClickListener() {
+        public void onClick(View v) {
+            pwindo.dismiss();
+        }
+    };
 
 }

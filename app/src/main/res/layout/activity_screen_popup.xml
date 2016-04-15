@@ -1,0 +1,41 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/popup_element"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#444444"
+    android:orientation="vertical"
+    android:padding="10sp"
+    android:baselineAligned="false">
+
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Breakfast"
+        android:id="@+id/breakfastButton"
+        android:layout_gravity="center_horizontal"
+         />
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Lunch"
+        android:id="@+id/lunchButton"
+        android:layout_gravity="center_horizontal"
+        android:singleLine="false" />
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Dinner"
+        android:id="@+id/dinnerButton"
+        android:layout_gravity="center_horizontal" />
+
+    <Button
+        android:id="@+id/btn_close_popup"
+        android:layout_width="38dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|bottom"
+        android:text="X" />
+
+</LinearLayout>
