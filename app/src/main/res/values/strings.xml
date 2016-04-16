@@ -24,4 +24,5 @@
     <string name="title_activity_add_recipes">Add Recipe</string>
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="title_activity_meals_display">meals_display</string>
+    <string name="title_activity_recipe_details">RecipeDetails</string>
 </resources>

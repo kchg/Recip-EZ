@@ -53,7 +53,7 @@ public class DataSource {
     public Recipe getRecipeDetails(String name){
         Recipe r = new Recipe();
         r.set_recipename(name);
-        String query = "SELECT * FROM " + myDBHandler.RECIPES_TABLE + "WHERE " + myDBHandler.COLUMN_RECIPE_NAME + " = " + name + " ;" ;
+        String query = "SELECT * FROM " + myDBHandler.RECIPES_TABLE + " WHERE " + myDBHandler.COLUMN_RECIPE_NAME + " = \"" + name + "\" ;" ;
         Cursor cursor = db.rawQuery(query, null);
 
         if (cursor.moveToFirst()) {
@@ -70,6 +70,28 @@ public class DataSource {
             }
         return r;
     }
+
+    public List<Ingredient> getRecipeIngredients(String recipe_id){
+        List<Ingredient> iv = new ArrayList<Ingredient>();
+        String query = "SELECT * FROM " + dbHelper.RECIPE_INGREDIENTS_TABLE + " JOIN " + dbHelper.INGREDIENTS_TABLE + " ON " + dbHelper.RECIPE_INGREDIENTS_TABLE + "." + dbHelper.COLUMN_INGREDIENT_ID + " = " + dbHelper.INGREDIENTS_TABLE + "." + dbHelper.COLUMN_ID + " WHERE " + dbHelper.COLUMN_RECIPE_ID  + " = \"" + recipe_id + "\";";
+        Cursor cursor = db.rawQuery(query, null);
+
+        cursor.moveToFirst();
+        while(!cursor.isAfterLast()){
+            Ingredient i = new Ingredient();
+            //r.set_recipename(cursor.getString(cursor.getColumnIndex(myDBHandler.COLUMN_RECIPE_NAME)));
+            i.set_ingredientname(cursor.getString(cursor.getColumnIndex(myDBHandler.COLUMN_INGREDIENT_NAME)));
+            i.set_amount(cursor.getFloat(cursor.getColumnIndex(myDBHandler.COLUMN_RECIPE_INGREDIENTS_AMOUNT)));
+            i.set_amount_modifier(cursor.getString(cursor.getColumnIndex(myDBHandler.COLUMN_RECIPE_INGREDIENTS_AMOUNT_MODIFIER)));
+
+            iv.add(i);
+            cursor.moveToNext();
+        }
+        cursor.close();
+        return iv;
+    }
+
+
 
     //TODO: right now this just deletes everything
     public void deleteIngredient(){
@@ -133,6 +155,8 @@ public class DataSource {
         return recipes;
 
     }
+
+
 
     public void addRecipeIngredients(long recipe_id, ArrayList<Ingredient>ingredients){
 

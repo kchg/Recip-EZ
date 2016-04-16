@@ -38,7 +38,11 @@
             android:name=".meals_display"
             android:label="@string/title_activity_meals_display"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".screen_popup"></activity>
+        <activity android:name=".screen_popup" />
+        <activity
+            android:name=".RecipeDetails"
+            android:label="@string/title_activity_recipe_details"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
