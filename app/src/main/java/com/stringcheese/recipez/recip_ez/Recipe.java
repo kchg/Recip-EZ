@@ -15,6 +15,10 @@ public class Recipe {
     ArrayList _ingredients = new ArrayList();
 
     public Recipe() {
+        _recipename = "";
+        _description = "";
+        _directions = "";
+        _servings = 1;
     }
 
     public Recipe(String _recipename, String _description, ArrayList ingredients) {

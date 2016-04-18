@@ -11,7 +11,13 @@ public class Ingredient {
     private String _amount_modifier;
 
 
-    public Ingredient(){}
+    public Ingredient(){
+        _id = 0;
+        _ingredientname = "no name";
+        _recipe_id = 0;
+        _amount_modifier = "N/A";
+        _amount = 0;
+    }
 
     public Ingredient(int id, String ingredientname){
         this._id = id;
