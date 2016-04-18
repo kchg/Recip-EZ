@@ -23,12 +23,16 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Created by Divyani on 4/12/2016.
+ */
 
 public class meals_display extends AppCompatActivity {
 
     Button btnClosePopup;
     Button btnBf, btnLunch, btnDin;
     Recipe selectedItem;
+    String meals;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +40,6 @@ public class meals_display extends AppCompatActivity {
         setContentView(R.layout.activity_meals_display);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
 
         //used to get data from db
         DataSource dataSource;
@@ -62,6 +65,16 @@ public class meals_display extends AppCompatActivity {
                 initiatePopupWindow();
             }
         });
+
+        /*
+        Bundle bundle = new Bundle();
+        bundle.putString("message", meals);
+        // set Fragmentclass Arguments
+        CalendarFragment fragobj = new CalendarFragment();
+        fragobj.setArguments(bundle);
+        */
+
+
     }
     private PopupWindow pwindo;
 
@@ -94,6 +107,9 @@ public class meals_display extends AppCompatActivity {
     private View.OnClickListener breakfast_button_click_listener = new View.OnClickListener() {
         public void onClick(View v) {
             String print = selectedItem.get_recipename();
+            CalendarRecipes.mealNames.add("b");
+            CalendarRecipes.mealNames.add(print);
+
             Toast.makeText(getApplicationContext(),"You have "+print+" for breakfast.",Toast.LENGTH_SHORT).show();
             pwindo.dismiss();
         }
@@ -102,6 +118,9 @@ public class meals_display extends AppCompatActivity {
     private View.OnClickListener lunch_button_click_listener = new View.OnClickListener() {
         public void onClick(View v) {
             String print = selectedItem.get_recipename();
+            CalendarRecipes.mealNames.add("l");
+            CalendarRecipes.mealNames.add(print);
+
             Toast.makeText(getApplicationContext(),"You have "+print+" for lunch.",Toast.LENGTH_SHORT).show();
             pwindo.dismiss();
         }
@@ -110,6 +129,9 @@ public class meals_display extends AppCompatActivity {
     private View.OnClickListener dinner_button_click_listener = new View.OnClickListener() {
         public void onClick(View v) {
             String print = selectedItem.get_recipename();
+            CalendarRecipes.mealNames.add("d");
+            CalendarRecipes.mealNames.add(print);
+
             Toast.makeText(getApplicationContext(),"You have "+print+" for dinner.",Toast.LENGTH_SHORT).show();
             pwindo.dismiss();
         }
@@ -117,6 +139,7 @@ public class meals_display extends AppCompatActivity {
 
     private View.OnClickListener cancel_button_click_listener = new View.OnClickListener() {
         public void onClick(View v) {
+            Toast.makeText(getApplicationContext(),meals,Toast.LENGTH_SHORT).show();
             pwindo.dismiss();
         }
     };

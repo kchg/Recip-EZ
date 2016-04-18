@@ -62,12 +62,15 @@ public class CalendarFragment extends Fragment implements View.OnClickListener{
 
     File file;
     String filename;
+    String meals;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_calendar, container, false);
 
+        //meals = getArguments().getString("message");
 
         filename = "calendarrecipes.txt";
 
@@ -80,6 +83,8 @@ public class CalendarFragment extends Fragment implements View.OnClickListener{
         String month=String.valueOf(gregorianCalendar.get(GregorianCalendar.MONTH));
         String day=String.valueOf(gregorianCalendar.get(GregorianCalendar.DAY_OF_MONTH));
         String year=String.valueOf(gregorianCalendar.get(GregorianCalendar.YEAR));
+
+        new CalendarRecipes();
 
         int y = Integer.parseInt(year);
         int d = Integer.parseInt(day);
