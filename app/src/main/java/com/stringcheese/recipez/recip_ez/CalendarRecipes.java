@@ -1,5 +1,6 @@
 package com.stringcheese.recipez.recip_ez;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
@@ -10,8 +11,10 @@ import java.util.List;
  */
 public class CalendarRecipes {
     public static HashMap<GregorianCalendar, MealData> recipes;
+    public static List<String> mealNames;
 
     public CalendarRecipes() {
+        mealNames = new ArrayList<>();
         recipes = new HashMap<>();
     }
 }
