@@ -34,10 +34,18 @@ public class MealData {
     }
 
     void setLunchItems(String l) {
-        breakfastItems.add(l);
+        lunchItems.add(l);
     }
 
     void setDinnerItems(String d) {
-        breakfastItems.add(d);
+        dinnerItems.add(d);
+    }
+
+    List<String> mergeLists() {
+        List<String> mergedList = new ArrayList<>(breakfastItems);
+        mergedList.addAll(lunchItems);
+        mergedList.addAll(dinnerItems);
+
+        return mergedList;
     }
 }

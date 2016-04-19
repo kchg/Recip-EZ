@@ -10,9 +10,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Toast;
 import android.view.Gravity;
 import android.content.Context;
@@ -50,19 +52,19 @@ public class CalendarFragment extends Fragment implements View.OnClickListener{
         // Required empty public constructor ,
     }
 
-    Button test;
     CalendarView cal;
     GregorianCalendar date, selectedDate;
     int i = 0;
-
-    Button save, edit;
-
 
     int flag;
 
     File file;
     String filename;
     String meals;
+    ListView listView;
+    ArrayAdapter adapter;
+    int adapterFlag = 1;
+    int addedFlag = 0;
 
 
     @Override
@@ -75,9 +77,12 @@ public class CalendarFragment extends Fragment implements View.OnClickListener{
         filename = "calendarrecipes.txt";
 
         cal = (CalendarView) v.findViewById(R.id.calendarView);
+        listView = (ListView) v.findViewById(R.id.recipeslist);
+
+        System.out.println("test");
 
         FloatingActionButton addMealsButton = (FloatingActionButton) v.findViewById(R.id.cal_add);
-        addMealsButton.setOnClickListener((View.OnClickListener) this);
+        addMealsButton.setOnClickListener(this);
 
         GregorianCalendar gregorianCalendar=new GregorianCalendar();
         String month=String.valueOf(gregorianCalendar.get(GregorianCalendar.MONTH));
@@ -95,6 +100,17 @@ public class CalendarFragment extends Fragment implements View.OnClickListener{
 
         file = getActivity().getFileStreamPath(filename);
 
+/*
+        try {
+            PrintWriter writer1 = new PrintWriter(file, "UTF-8");
+            writer1.printf("2016 3 18 b Spahgetti | eggs and bacon | l Tuna Sandwich | d mac and cheese |%n " +
+                    "2016 3 19 b Egg bagel Sandwich | l apple | sandwich | poop and ketchup | d divyani rao :) | steak and potatos |%n");
+            writer1.close();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+*/
 
         if(file.exists())
         {
@@ -104,6 +120,7 @@ public class CalendarFragment extends Fragment implements View.OnClickListener{
                 Scanner tokenizer;
 
                 while (getLine.hasNextLine()) {
+
                     String line = getLine.nextLine();
                     tokenizer = new Scanner(line);
                     System.out.println(line);
@@ -132,7 +149,6 @@ public class CalendarFragment extends Fragment implements View.OnClickListener{
 
                                     if (tmp.equals("|")) {
                                         data.setBreakfastItems(recipeName);
-                                        CalendarRecipes.recipes.put(date, data);
                                         recipeName = "";
                                         continue;
                                     }
@@ -154,7 +170,6 @@ public class CalendarFragment extends Fragment implements View.OnClickListener{
 
                                     if (tmp.equals("|")) {
                                         data.setLunchItems(recipeName);
-                                        CalendarRecipes.recipes.put(date, data);
                                         recipeName = "";
                                         continue;
                                     }
@@ -171,7 +186,6 @@ public class CalendarFragment extends Fragment implements View.OnClickListener{
 
                                     if (tmp.equals("|")) {
                                         data.setDinnerItems(recipeName);
-                                        CalendarRecipes.recipes.put(date, data);
                                         recipeName = "";
                                         continue;
                                     }
@@ -180,6 +194,7 @@ public class CalendarFragment extends Fragment implements View.OnClickListener{
                                 }
                             }
                         }
+                        CalendarRecipes.recipes.put(date, data);
                     }
                     tokenizer.close();
                 }
@@ -192,10 +207,43 @@ public class CalendarFragment extends Fragment implements View.OnClickListener{
         }
         else
         {
+            Toast.makeText(getActivity(), "Not working", Toast.LENGTH_SHORT).show();
             file = new File(getActivity().getFilesDir(), filename);
         }
+/*
+        for (Map.Entry<GregorianCalendar, MealData> entry : CalendarRecipes.recipes.entrySet()) {
+            GregorianCalendar key = entry.getKey();
+            MealData value = entry.getValue();
 
+            System.out.printf("%d %d %d", key.get(Calendar.YEAR), key.get(Calendar.MONTH), key.get(Calendar.DAY_OF_MONTH));
 
+            System.out.println();
+            System.out.print("b ");
+            for (String b : value.breakfastItems) {
+                System.out.print(b + " ");
+            }
+
+            System.out.println();
+            System.out.print("l ");
+            for (String l : value.lunchItems) {
+                System.out.print(l + " ");
+            }
+
+            System.out.println();
+            System.out.print("d ");
+            for (String di : value.dinnerItems) {
+                System.out.print(di + " ");
+            }
+            System.out.println();
+        }
+
+*/
+
+        if (CalendarRecipes.recipes.get(date) != null) {
+            MealData values = CalendarRecipes.recipes.get(date);
+            adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, values.mergeLists());
+            listView.setAdapter(adapter);
+        }
 
         cal.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
@@ -206,28 +254,62 @@ public class CalendarFragment extends Fragment implements View.OnClickListener{
                 flag = 1;
                 selectedDate = new GregorianCalendar(year, month, dayOfMonth);
 
-                if(CalendarRecipes.recipes.get(selectedDate)!=null)
-                {
-
-                    //update the next field that need to be there
-
-
+                if(CalendarRecipes.recipes.get(selectedDate)!=null) {
+                    MealData values = CalendarRecipes.recipes.get(selectedDate);
+                    adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, values.mergeLists());
+                    listView.setAdapter(adapter);
+                    adapterFlag = 0;
                 }
 
-                else {
-
+                else if (adapterFlag == 0){
+                    adapter.clear();
                 }
             }
         });
         // Inflate the layout for this fragment
         return v;
     }
+
+    public void onResume() {
+        super.onResume();
+        if (addedFlag == 1) {
+            MealData values;
+            if (CalendarRecipes.recipes.get(selectedDate) != null) {
+                values = CalendarRecipes.recipes.get(selectedDate);
+            }
+            else {
+                values = new MealData();
+            }
+
+                for (int i = 0; i < CalendarRecipes.mealNames.size(); i += 2) {
+                    if (CalendarRecipes.mealNames.get(i).equals("b")) {
+                        values.setBreakfastItems(CalendarRecipes.mealNames.get(i+1));
+                    }
+
+                    else if (CalendarRecipes.mealNames.get(i).equals("l")) {
+                        values.setLunchItems(CalendarRecipes.mealNames.get(i+1));
+                    }
+
+                    else if (CalendarRecipes.mealNames.get(i).equals("d")) {
+                        values.setDinnerItems(CalendarRecipes.mealNames.get(i+1));
+                    }
+                }
+
+                CalendarRecipes.recipes.put(selectedDate, values);
+                CalendarRecipes.mealNames.clear();
+                adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, values.mergeLists());
+                listView.setAdapter(adapter);
+                writeToFile();
+        }
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.cal_add:
                 Intent intent = new Intent(getActivity(), meals_display.class);
                 startActivity(intent);
+                addedFlag = 1;
                 break;
         }
     }
@@ -284,5 +366,4 @@ public class CalendarFragment extends Fragment implements View.OnClickListener{
             e.printStackTrace();
         }
     }
-
 }
