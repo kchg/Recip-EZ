@@ -1,5 +1,7 @@
 package com.stringcheese.recipez.recip_ez;
 
+import android.net.Uri;
+
 import java.util.ArrayList;
 
 /**
@@ -11,6 +13,7 @@ public class Recipe {
     private String _description;
     private String _directions;
     private int _servings;
+    private String _image;
 
     ArrayList _ingredients = new ArrayList();
 
@@ -81,5 +84,13 @@ public class Recipe {
     }
     public void set_ingredients(ArrayList ingredients) {
         this._ingredients = ingredients;
+    }
+
+    public String get_image() {
+        return _image;
+    }
+
+    public void set_image(String _image) {
+        this._image = _image;
     }
 }

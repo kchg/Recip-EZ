@@ -1,6 +1,7 @@
 package com.stringcheese.recipez.recip_ez;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
@@ -105,6 +106,10 @@ public class add_recipes extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    private String image_string = "";
+    public void setImage(Uri image){
+        this.image_string = image.toString();
+    }
     //method that is called when user clicks submit recipe; package everything together and insert into database
     public void submitRecipe(){
         String recipe_name;
@@ -129,6 +134,7 @@ public class add_recipes extends AppCompatActivity {
         r.set_servings(servings);
         r.set_description(description);
         r.set_directions(directions);
+        r.set_image(image_string);
 
         Log.d("var", recipe_name);
 

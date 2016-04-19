@@ -9,6 +9,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -62,11 +63,14 @@ public class DataSource {
                 int _serving = cursor.getInt(cursor.getColumnIndex(myDBHandler.COLUMN_RECIPE_SERVINGS));
                 String _description = cursor.getString(cursor.getColumnIndex(myDBHandler.COLUMN_RECIPE_DESCRIPTION));
                 String _directions = cursor.getString(cursor.getColumnIndex(myDBHandler.COLUMN_RECIPE_DIRECTIONS));
+                String _image = cursor.getString(cursor.getColumnIndex(myDBHandler.COLUMN_RECIPE_IMAGE));
+
 
                 r.set_id(_id);
                 r.set_servings(_serving);
                 r.set_description(_description);
                 r.set_directions(_directions);
+                r.set_image(_image);
             }
         return r;
     }
@@ -107,6 +111,8 @@ public class DataSource {
         values.put(dbHelper.COLUMN_RECIPE_DESCRIPTION, r.get_description());
         values.put(dbHelper.COLUMN_RECIPE_DIRECTIONS, r.get_directions());
 
+
+        values.put(dbHelper.COLUMN_RECIPE_IMAGE, r.get_image());
         //clean input
         recipe_id = db.insert(dbHelper.RECIPES_TABLE, null, values); //this should return the autoincremented recipe id
 
@@ -116,8 +122,6 @@ public class DataSource {
 
         return recipe_id;
 }
-
-
 
 
     public ArrayList<Ingredient> ingredientsToList(){

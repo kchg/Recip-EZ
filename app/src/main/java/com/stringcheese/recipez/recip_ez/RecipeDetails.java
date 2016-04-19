@@ -1,13 +1,17 @@
 package com.stringcheese.recipez.recip_ez;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -25,17 +29,24 @@ public class RecipeDetails extends AppCompatActivity {
         setContentView(R.layout.activity_recipe_details);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         dataSource = new DataSource(getBaseContext());
         dataSource.open();
 
         Intent i = getIntent();
         recipename = i.getStringExtra("recipe_name");
+
+
+        getSupportActionBar().setTitle(recipename);
         populate(recipename);
 
     }
     public void populate(String name){
-        TextView recipe_name = (TextView) this.findViewById(R.id.recipe_name);
+        //TextView recipe_name = (TextView) this.findViewById(R.id.recipe_name);
+
+
+
 
         TextView recipe_servings = (TextView) this.findViewById(R.id.recipe_servings);
         TextView recipe_directions = (TextView) this.findViewById(R.id.recipe_directions);
@@ -43,7 +54,7 @@ public class RecipeDetails extends AppCompatActivity {
 
 
         Recipe r = dataSource.getRecipeDetails(name);
-        if(r.get_recipename() != "") recipe_name.setText(r.get_recipename());
+        //if(r.get_recipename() != "") recipe_name.setText(r.get_recipename());
         recipe_servings.setText(String.valueOf(r.get_servings()));
         if(r.get_directions() != "") recipe_directions.setText(r.get_directions());
         if(r.get_description() != "") recipe_description.setText(r.get_description());
@@ -60,7 +71,21 @@ public class RecipeDetails extends AppCompatActivity {
         listView.setAdapter(adapter);
 
 
+        //set image
+        if(r.get_image()!=null) {
+            ImageView imgView = (ImageView) findViewById(R.id.image);
+            imgView.setImageURI((Uri.parse(r.get_image())));
+        }
 
-
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // Respond to the action bar's Up/Home button
+            case android.R.id.home:
+                this.finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
