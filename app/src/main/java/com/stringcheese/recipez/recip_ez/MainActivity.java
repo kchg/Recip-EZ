@@ -102,14 +102,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void changeFragment(int id){
-        if (id == R.id.nav_home) {
-            MainFragment fragment = new MainFragment();
-            android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.fragment_container, fragment);
-            fragmentTransaction.commit();
-            setTitle("Overview");
-
-        } else if (id == R.id.nav_calendar) {
+        if (id == R.id.nav_calendar) {
             CalendarFragment fragment = new CalendarFragment();
             android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.fragment_container, fragment);

@@ -22,14 +22,19 @@
         android:elevation="4dp" />
     </android.support.design.widget.TextInputLayout>
 
-
-    <android.support.design.widget.TextInputLayout
+    <LinearLayout
         android:id="@+id/recipe_servings_layout"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_below="@+id/recipe_name_layout">
-    <EditText
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/recipe_name_layout"
+        android:orientation="horizontal">
+        <android.support.design.widget.TextInputLayout
+        android:layout_weight="0.9"
         android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        >
+        <EditText
+        android:layout_width="match_parent"
         android:layout_height="40dp"
         android:id="@+id/recipe_servings"
         android:inputType="number"
@@ -38,8 +43,20 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_margin="10dp" />
-    </android.support.design.widget.TextInputLayout>
-
+        </android.support.design.widget.TextInputLayout>
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:id="@+id/imageView"
+            android:layout_alignBottom="@+id/recipe_directions_layout"
+            android:layout_centerHorizontal="true" />
+        <Button
+            android:layout_weight="0.1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add Image"
+            android:id="@+id/add_image" />
+    </LinearLayout>
 
 
     <android.support.design.widget.TextInputLayout
@@ -64,7 +81,8 @@
         android:id="@+id/recipe_directions_layout"
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
-        android:layout_below="@+id/recipe_description_layout">
+        android:layout_below="@+id/recipe_description_layout"
+        android:layout_above="@+id/add_image">
     <EditText
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
@@ -78,4 +96,8 @@
         android:layout_margin="10dp"
         android:gravity="top" />
     </android.support.design.widget.TextInputLayout>
+
+
+
+
 </RelativeLayout>

@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.net.Uri;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -39,6 +40,7 @@ public class myDBHandler extends SQLiteOpenHelper {
     public static final String COLUMN_RECIPE_SERVINGS = "recipe_servings";
     public static final String COLUMN_RECIPE_DESCRIPTION = "recipe_description";
     public static final String COLUMN_RECIPE_DIRECTIONS = "recipe_directions";
+    public static final String COLUMN_RECIPE_IMAGE = "recipe_image_uri";
 
     public static final String RECIPE_INGREDIENTS_TABLE = "recipe_ingredients";
     public static final String COLUMN_RECIPE_INGREDIENTS_AMOUNT = "amount";
@@ -47,7 +49,7 @@ public class myDBHandler extends SQLiteOpenHelper {
 
 
     public static final String CREATE_INGREDIENTS_TABLE = "CREATE table IF NOT EXISTS " + INGREDIENTS_TABLE + "(" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COLUMN_INGREDIENT_NAME + " TEXT );";
-    public static final String CREATE_RECIPES_TABLE = "CREATE TABLE IF NOT EXISTS " + RECIPES_TABLE + "(" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COLUMN_RECIPE_NAME + " TEXT, " + COLUMN_RECIPE_SERVINGS + " INTEGER, " + COLUMN_RECIPE_DESCRIPTION + " TEXT, " + COLUMN_RECIPE_DIRECTIONS + " TEXT );";
+    public static final String CREATE_RECIPES_TABLE = "CREATE TABLE IF NOT EXISTS " + RECIPES_TABLE + "(" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COLUMN_RECIPE_NAME + " TEXT, " + COLUMN_RECIPE_SERVINGS + " INTEGER, " + COLUMN_RECIPE_DESCRIPTION + " TEXT, " + COLUMN_RECIPE_DIRECTIONS + " TEXT, " + COLUMN_RECIPE_IMAGE + " TEXT );";
     public static final String CREATE_RECIPE_INGREDIENTS_TABLE = "CREATE TABLE IF NOT EXISTS " + RECIPE_INGREDIENTS_TABLE + "(" + COLUMN_RECIPE_ID + " INTEGER, " + COLUMN_INGREDIENT_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COLUMN_RECIPE_INGREDIENTS_AMOUNT  + " FLOAT, " + COLUMN_RECIPE_INGREDIENTS_AMOUNT_MODIFIER + " TEXT );";
 
     public myDBHandler(Context context){
@@ -89,6 +91,9 @@ public class myDBHandler extends SQLiteOpenHelper {
     }
 
     //add a recipe with its ingredients
+    public Uri imageUri;
+    public void setUri(Uri u){ imageUri = u;}
+
     public void addRecipe(Recipe r){
         long recipe_id;
         ArrayList<Ingredient> ingredients = new ArrayList<Ingredient>();
@@ -99,6 +104,12 @@ public class myDBHandler extends SQLiteOpenHelper {
         values.put(COLUMN_RECIPE_SERVINGS, r.get_servings());
         values.put(COLUMN_RECIPE_DESCRIPTION, r.get_description());
         values.put(COLUMN_RECIPE_DIRECTIONS, r.get_directions());
+
+        if (imageUri != null){
+            values.put(COLUMN_RECIPE_IMAGE, imageUri.toString());
+        }
+
+
         recipe_id = db.insert(RECIPES_TABLE, null, values); //this should return the autoincremented recipe id
 
         ingredients = r.get_ingredients(); //should hold ingredient objects; each including their own ids
