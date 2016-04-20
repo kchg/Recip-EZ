@@ -65,7 +65,6 @@ public class MealData {
             mergedList.add("Dinner");
             mergedList.addAll(dinnerItems);
         }
-
         return mergedList;
     }
 }
