@@ -85,7 +85,7 @@ public class meals_display extends AppCompatActivity {
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View layout = inflater.inflate(R.layout.activity_screen_popup,
                     (ViewGroup) findViewById(R.id.popup_element));
-            pwindo = new PopupWindow(layout, 700, 700, true);
+            pwindo = new PopupWindow(layout, 700, 800, true);
             pwindo.showAtLocation(layout, Gravity.CENTER, 0, 0);
 
             btnBf = (Button) layout.findViewById(R.id.breakfastButton);
