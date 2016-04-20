@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -40,7 +41,8 @@ public class meals_display extends AppCompatActivity {
         setContentView(R.layout.activity_meals_display);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setTitle("Add Meal");
         //used to get data from db
         DataSource dataSource;
         dataSource = new DataSource(this);
@@ -78,6 +80,16 @@ public class meals_display extends AppCompatActivity {
     }
     private PopupWindow pwindo;
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                this.finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
     private void initiatePopupWindow() {
         try {
             // We need to get the instance of the LayoutInflater
