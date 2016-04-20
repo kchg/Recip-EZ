@@ -51,14 +51,20 @@ public class MealData {
 
     List<String> mergeListsWithBLD() {
         List<String> mergedList = new ArrayList<>();
-        mergedList.add("Breakfast");
-        mergedList.addAll(breakfastItems);
-        mergedList.add("Lunch");
-        mergedList.addAll(lunchItems);
-        mergedList.add("Dinner");
-        mergedList.addAll(dinnerItems);
+        if (!breakfastItems.isEmpty()) {
+            mergedList.add("Breakfast");
+            mergedList.addAll(breakfastItems);
+        }
 
-        System.out.print(mergedList);
+        if (!lunchItems.isEmpty()) {
+            mergedList.add("Lunch");
+            mergedList.addAll(lunchItems);
+        }
+
+        if (!dinnerItems.isEmpty()) {
+            mergedList.add("Dinner");
+            mergedList.addAll(dinnerItems);
+        }
 
         return mergedList;
     }

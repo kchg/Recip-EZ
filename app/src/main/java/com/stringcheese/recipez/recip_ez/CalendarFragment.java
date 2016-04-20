@@ -197,7 +197,7 @@ public class CalendarFragment extends Fragment implements View.OnClickListener{
         System.out.print("test");
         if (CalendarRecipes.recipes.get(date) != null) {
             MealData values = CalendarRecipes.recipes.get(date);
-            adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, values.mergeLists());
+            adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, values.mergeListsWithBLD());
             listView.setAdapter(adapter);
         }
 
@@ -213,12 +213,12 @@ public class CalendarFragment extends Fragment implements View.OnClickListener{
 
                 if(CalendarRecipes.recipes.get(selectedDate)!=null) {
                     MealData values = CalendarRecipes.recipes.get(selectedDate);
-                    adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, values.mergeLists());
+                    adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, values.mergeListsWithBLD());
                     listView.setAdapter(adapter);
                     adapterFlag = 0;
                 } else if (adapterFlag == 0){
                     adapter.clear();
-                } else if (CalendarRecipes.recipes.get(selectedDate) == null && adapterFlag == 0) {
+                } else if (CalendarRecipes.recipes.get(selectedDate) == null && CalendarRecipes.recipes.get(date) != null) {
                     adapter.clear();
                 }
             }
@@ -256,7 +256,7 @@ public class CalendarFragment extends Fragment implements View.OnClickListener{
             }
 
             CalendarRecipes.mealNames.clear();
-            adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, values.mergeLists());
+            adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, values.mergeListsWithBLD());
             listView.setAdapter(adapter);
             writeToFile();
         }
