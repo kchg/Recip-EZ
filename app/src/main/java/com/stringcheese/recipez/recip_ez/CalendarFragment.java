@@ -72,14 +72,11 @@ public class CalendarFragment extends Fragment implements View.OnClickListener{
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_calendar, container, false);
 
-        //meals = getArguments().getString("message");
-
         filename = "calendarrecipes.txt";
 
         cal = (CalendarView) v.findViewById(R.id.calendarView);
         listView = (ListView) v.findViewById(R.id.recipeslist);
 
-        System.out.println("onCreateView test");
 
         FloatingActionButton addMealsButton = (FloatingActionButton) v.findViewById(R.id.cal_add);
         addMealsButton.setOnClickListener(this);
@@ -100,19 +97,7 @@ public class CalendarFragment extends Fragment implements View.OnClickListener{
 
         file = getActivity().getFileStreamPath(filename);
 
-
-        /*try {
-            PrintWriter writer1 = new PrintWriter(file, "UTF-8");
-            writer1.printf("2016 3 18 b Spahgetti | eggs and bacon | l Tuna Sandwich | d mac and cheese |%n" +
-                    "2016 3 19 b Egg bagel Sandwich | l apple | sandwich | poop and ketchup | d steak and potatos |%n" +
-                     "2016 3 20 b Eggs and Bacon | l blt sandwich | d cheese pizza | pepperoni pizza |%n");
-            writer1.close();
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-*/
-
+        System.out.printf("test");
         if(file.exists())
         {
             try
@@ -124,7 +109,6 @@ public class CalendarFragment extends Fragment implements View.OnClickListener{
 
                     String line = getLine.nextLine();
                     tokenizer = new Scanner(line);
-                    System.out.println("Printing line = " + line);
 
                     while (tokenizer.hasNextInt()) {
                         int y1 = tokenizer.nextInt();
@@ -207,38 +191,10 @@ public class CalendarFragment extends Fragment implements View.OnClickListener{
             }
         }
         else {
-            Toast.makeText(getActivity(), "Not working", Toast.LENGTH_SHORT).show();
             file = new File(getActivity().getFilesDir(), filename);
         }
-/*
-        for (Map.Entry<GregorianCalendar, MealData> entry : CalendarRecipes.recipes.entrySet()) {
-            GregorianCalendar key = entry.getKey();
-            MealData value = entry.getValue();
 
-            System.out.printf("%d %d %d", key.get(Calendar.YEAR), key.get(Calendar.MONTH), key.get(Calendar.DAY_OF_MONTH));
-
-            System.out.println();
-            System.out.print("b ");
-            for (String b : value.breakfastItems) {
-                System.out.print(b + " ");
-            }
-
-            System.out.println();
-            System.out.print("l ");
-            for (String l : value.lunchItems) {
-                System.out.print(l + " ");
-            }
-
-            System.out.println();
-            System.out.print("d ");
-            for (String di : value.dinnerItems) {
-                System.out.print(di + " ");
-            }
-            System.out.println();
-        }
-
-*/
-
+        System.out.print("test");
         if (CalendarRecipes.recipes.get(date) != null) {
             MealData values = CalendarRecipes.recipes.get(date);
             adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, values.mergeLists());
@@ -261,6 +217,8 @@ public class CalendarFragment extends Fragment implements View.OnClickListener{
                     listView.setAdapter(adapter);
                     adapterFlag = 0;
                 } else if (adapterFlag == 0){
+                    adapter.clear();
+                } else if (CalendarRecipes.recipes.get(selectedDate) == null && adapterFlag == 0) {
                     adapter.clear();
                 }
             }
@@ -300,7 +258,6 @@ public class CalendarFragment extends Fragment implements View.OnClickListener{
             CalendarRecipes.mealNames.clear();
             adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, values.mergeLists());
             listView.setAdapter(adapter);
-            System.out.print("Whyyyyy");
             writeToFile();
         }
     }
@@ -329,48 +286,41 @@ public class CalendarFragment extends Fragment implements View.OnClickListener{
                 int day = gregObject.get(Calendar.DAY_OF_MONTH);
 
                 writer.printf("%d %d %d ", year, month, day);
-                System.out.printf("writetofile %d %d %d ", year, month, day);
 
                 for (String b : values.getBreakfastItems()) {
                     if (bflag == 1) {
-                        System.out.print("b ");
                         writer.printf("b ");
                         bflag = 0;
                     }
 
-                    System.out.printf("%s | ", b);
                     writer.printf("%s | ", b);
 
                 }
 
                 for (String l : values.getLunchItems()) {
                     if (lflag == 1) {
-                        System.out.print("l ");
                         writer.printf("l ");
                         lflag = 0;
                     }
 
-                    System.out.printf("%s | ", l);
                     writer.printf("%s | ", l);
                 }
 
                 for (String d : values.getDinnerItems()) {
                     if (dflag == 1) {
-                        System.out.print("d ");
                         writer.printf("d ");
                         dflag = 0;
                     }
 
-                    System.out.printf("%s | ", d);
                     writer.printf("%s | ", d);
                 }
 
-                System.out.println();
                 writer.println();
             }
             writer.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
 }

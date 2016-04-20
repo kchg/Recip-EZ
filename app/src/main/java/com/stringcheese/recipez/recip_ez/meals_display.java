@@ -97,7 +97,7 @@ public class meals_display extends AppCompatActivity {
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View layout = inflater.inflate(R.layout.activity_screen_popup,
                     (ViewGroup) findViewById(R.id.popup_element));
-            pwindo = new PopupWindow(layout, 600, 600, true);
+            pwindo = new PopupWindow(layout, 700, 800, true);
             pwindo.showAtLocation(layout, Gravity.CENTER, 0, 0);
 
             btnBf = (Button) layout.findViewById(R.id.breakfastButton);
@@ -151,7 +151,6 @@ public class meals_display extends AppCompatActivity {
 
     private View.OnClickListener cancel_button_click_listener = new View.OnClickListener() {
         public void onClick(View v) {
-            Toast.makeText(getApplicationContext(),meals,Toast.LENGTH_SHORT).show();
             pwindo.dismiss();
         }
     };
