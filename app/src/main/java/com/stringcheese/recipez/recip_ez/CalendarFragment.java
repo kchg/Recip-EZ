@@ -64,7 +64,7 @@ public class CalendarFragment extends Fragment implements View.OnClickListener{
     ListView listView;
     ArrayAdapter adapter;
     int adapterFlag = 1;
-    int addedFlag = 0;
+    int dateChanged = 1;
 
 
     @Override
@@ -79,7 +79,7 @@ public class CalendarFragment extends Fragment implements View.OnClickListener{
         cal = (CalendarView) v.findViewById(R.id.calendarView);
         listView = (ListView) v.findViewById(R.id.recipeslist);
 
-        System.out.println("test");
+        System.out.println("onCreateView test");
 
         FloatingActionButton addMealsButton = (FloatingActionButton) v.findViewById(R.id.cal_add);
         addMealsButton.setOnClickListener(this);
@@ -103,15 +103,16 @@ public class CalendarFragment extends Fragment implements View.OnClickListener{
 /*
         try {
             PrintWriter writer1 = new PrintWriter(file, "UTF-8");
-            writer1.printf("2016 3 18 b Spahgetti | eggs and bacon | l Tuna Sandwich | d mac and cheese |%n " +
-                    "2016 3 19 b Egg bagel Sandwich | l apple | sandwich | poop and ketchup | d divyani rao :) | steak and potatos |%n");
+            writer1.printf("2016 3 18 b Spahgetti | eggs and bacon | l Tuna Sandwich | d mac and cheese |%n" +
+                    "2016 3 19 b Egg bagel Sandwich | l apple | sandwich | poop and ketchup | d steak and potatos |%n" +
+                     "2016 3 20 b Eggs and Bacon | l blt sandwich | d cheese pizza | pepperoni pizza |%n");
             writer1.close();
         }
         catch (IOException e) {
             e.printStackTrace();
         }
-*/
 
+*/
         if(file.exists())
         {
             try
@@ -123,7 +124,7 @@ public class CalendarFragment extends Fragment implements View.OnClickListener{
 
                     String line = getLine.nextLine();
                     tokenizer = new Scanner(line);
-                    System.out.println(line);
+                    System.out.println("Printing line = " + line);
 
                     while (tokenizer.hasNextInt()) {
                         int y1 = tokenizer.nextInt();
@@ -205,8 +206,7 @@ public class CalendarFragment extends Fragment implements View.OnClickListener{
                 e.printStackTrace();
             }
         }
-        else
-        {
+        else {
             Toast.makeText(getActivity(), "Not working", Toast.LENGTH_SHORT).show();
             file = new File(getActivity().getFilesDir(), filename);
         }
@@ -253,15 +253,14 @@ public class CalendarFragment extends Fragment implements View.OnClickListener{
 
                 flag = 1;
                 selectedDate = new GregorianCalendar(year, month, dayOfMonth);
+                dateChanged = 0;
 
                 if(CalendarRecipes.recipes.get(selectedDate)!=null) {
                     MealData values = CalendarRecipes.recipes.get(selectedDate);
                     adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, values.mergeLists());
                     listView.setAdapter(adapter);
                     adapterFlag = 0;
-                }
-
-                else if (adapterFlag == 0){
+                } else if (adapterFlag == 0){
                     adapter.clear();
                 }
             }
@@ -272,34 +271,37 @@ public class CalendarFragment extends Fragment implements View.OnClickListener{
 
     public void onResume() {
         super.onResume();
-        if (addedFlag == 1) {
+        if (CalendarRecipes.addedFlag == 1) {
             MealData values;
-            if (CalendarRecipes.recipes.get(selectedDate) != null) {
+            if (CalendarRecipes.recipes.get(date) != null && dateChanged == 1) {
+                values = CalendarRecipes.recipes.get(date);
+            } else if (CalendarRecipes.recipes.get(selectedDate) != null) {
                 values = CalendarRecipes.recipes.get(selectedDate);
-            }
-            else {
+            } else {
                 values = new MealData();
             }
 
-                for (int i = 0; i < CalendarRecipes.mealNames.size(); i += 2) {
-                    if (CalendarRecipes.mealNames.get(i).equals("b")) {
-                        values.setBreakfastItems(CalendarRecipes.mealNames.get(i+1));
-                    }
-
-                    else if (CalendarRecipes.mealNames.get(i).equals("l")) {
-                        values.setLunchItems(CalendarRecipes.mealNames.get(i+1));
-                    }
-
-                    else if (CalendarRecipes.mealNames.get(i).equals("d")) {
-                        values.setDinnerItems(CalendarRecipes.mealNames.get(i+1));
-                    }
+            for (int i = 0; i < CalendarRecipes.mealNames.size(); i += 2) {
+                if (CalendarRecipes.mealNames.get(i).equals("b")) {
+                    values.setBreakfastItems(CalendarRecipes.mealNames.get(i+1));
+                } else if (CalendarRecipes.mealNames.get(i).equals("l")) {
+                    values.setLunchItems(CalendarRecipes.mealNames.get(i+1));
+                } else if (CalendarRecipes.mealNames.get(i).equals("d")) {
+                    values.setDinnerItems(CalendarRecipes.mealNames.get(i+1));
                 }
+            }
 
+            if (dateChanged == 1) {
+                CalendarRecipes.recipes.put(date, values);
+            } else {
                 CalendarRecipes.recipes.put(selectedDate, values);
-                CalendarRecipes.mealNames.clear();
-                adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, values.mergeLists());
-                listView.setAdapter(adapter);
-                writeToFile();
+            }
+
+            CalendarRecipes.mealNames.clear();
+            adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, values.mergeLists());
+            listView.setAdapter(adapter);
+            System.out.print("Whyyyyy");
+            writeToFile();
         }
     }
 
@@ -309,13 +311,9 @@ public class CalendarFragment extends Fragment implements View.OnClickListener{
             case R.id.cal_add:
                 Intent intent = new Intent(getActivity(), meals_display.class);
                 startActivity(intent);
-                addedFlag = 1;
                 break;
         }
     }
-
-
-
 
     private void writeToFile() {
         try
@@ -331,35 +329,44 @@ public class CalendarFragment extends Fragment implements View.OnClickListener{
                 int day = gregObject.get(Calendar.DAY_OF_MONTH);
 
                 writer.printf("%d %d %d ", year, month, day);
+                System.out.printf("writetofile %d %d %d ", year, month, day);
 
                 for (String b : values.getBreakfastItems()) {
                     if (bflag == 1) {
+                        System.out.print("b ");
                         writer.printf("b ");
                         bflag = 0;
                     }
 
-                    writer.printf("%s |", b);
+                    System.out.printf("%s | ", b);
+                    writer.printf("%s | ", b);
+
                 }
 
-                for (String l : values.getBreakfastItems()) {
+                for (String l : values.getLunchItems()) {
                     if (lflag == 1) {
+                        System.out.print("l ");
                         writer.printf("l ");
                         lflag = 0;
                     }
 
-                    writer.printf("%s |", l);
+                    System.out.printf("%s | ", l);
+                    writer.printf("%s | ", l);
                 }
 
-                for (String d : values.getBreakfastItems()) {
+                for (String d : values.getDinnerItems()) {
                     if (dflag == 1) {
+                        System.out.print("d ");
                         writer.printf("d ");
                         dflag = 0;
                     }
 
-                    writer.printf("%s |", d);
+                    System.out.printf("%s | ", d);
+                    writer.printf("%s | ", d);
                 }
 
-                writer.print("\n");
+                System.out.println();
+                writer.println();
             }
             writer.close();
         } catch (IOException e) {

@@ -109,7 +109,7 @@ public class meals_display extends AppCompatActivity {
             String print = selectedItem.get_recipename();
             CalendarRecipes.mealNames.add("b");
             CalendarRecipes.mealNames.add(print);
-
+            CalendarRecipes.addedFlag = 1;
             Toast.makeText(getApplicationContext(),"You have "+print+" for breakfast.",Toast.LENGTH_SHORT).show();
             pwindo.dismiss();
         }
@@ -120,7 +120,7 @@ public class meals_display extends AppCompatActivity {
             String print = selectedItem.get_recipename();
             CalendarRecipes.mealNames.add("l");
             CalendarRecipes.mealNames.add(print);
-
+            CalendarRecipes.addedFlag = 1;
             Toast.makeText(getApplicationContext(),"You have "+print+" for lunch.",Toast.LENGTH_SHORT).show();
             pwindo.dismiss();
         }
@@ -131,7 +131,7 @@ public class meals_display extends AppCompatActivity {
             String print = selectedItem.get_recipename();
             CalendarRecipes.mealNames.add("d");
             CalendarRecipes.mealNames.add(print);
-
+            CalendarRecipes.addedFlag = 1;
             Toast.makeText(getApplicationContext(),"You have "+print+" for dinner.",Toast.LENGTH_SHORT).show();
             pwindo.dismiss();
         }

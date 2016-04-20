@@ -12,9 +12,11 @@ import java.util.List;
 public class CalendarRecipes {
     public static HashMap<GregorianCalendar, MealData> recipes;
     public static List<String> mealNames;
+    public static int addedFlag;
 
     public CalendarRecipes() {
         mealNames = new ArrayList<>();
         recipes = new HashMap<>();
+        addedFlag = 0;
     }
 }
