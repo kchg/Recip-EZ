@@ -100,8 +100,8 @@ public class CalendarFragment extends Fragment implements View.OnClickListener{
 
         file = getActivity().getFileStreamPath(filename);
 
-/*
-        try {
+
+        /*try {
             PrintWriter writer1 = new PrintWriter(file, "UTF-8");
             writer1.printf("2016 3 18 b Spahgetti | eggs and bacon | l Tuna Sandwich | d mac and cheese |%n" +
                     "2016 3 19 b Egg bagel Sandwich | l apple | sandwich | poop and ketchup | d steak and potatos |%n" +
@@ -111,8 +111,8 @@ public class CalendarFragment extends Fragment implements View.OnClickListener{
         catch (IOException e) {
             e.printStackTrace();
         }
-
 */
+
         if(file.exists())
         {
             try
