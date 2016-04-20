@@ -46,6 +46,7 @@ public class AddRecipeFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_add_recipes, container, false);
         Button b = (Button) rootView.findViewById(R.id.add_image);
 
+        viewImage = (ImageView)rootView.findViewById(R.id.imageView);
         b.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
