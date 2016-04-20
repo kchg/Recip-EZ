@@ -95,4 +95,5 @@
         <ImageView android:id="@+id/image"
             android:layout_column="0" />
     </TableRow>
+
 </TableLayout>

@@ -17,6 +17,7 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -41,7 +42,20 @@ public class GroceryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_grocery, container, false);
-
+        dataSource = new DataSource(getContext());
+        dataSource.open();
+        List<MealData> tmp = new ArrayList<MealData>(CalendarRecipes.recipes.values());
+        List<String> recipe_names = new ArrayList<String>();
+        for(MealData meal:tmp){
+            recipe_names.addAll(meal.mergeLists());
+        }
+        List<Ingredient> grocery_ingredients = new ArrayList<Ingredient>();
+        grocery_ingredients = dataSource.getGrocery(recipe_names);
+        ArrayAdapter<Ingredient> adapter;
+        ListView listView = (ListView)v.findViewById(R.id.ingredients_list);
+        adapter = new ArrayAdapter<Ingredient>(getContext(), android.R.layout.simple_list_item_1, grocery_ingredients);
+        listView.setAdapter(adapter);
+/*
         ListView lv = (ListView) v.findViewById(R.id.ingredients_list);
 
         ListAdapter adapter;
@@ -142,7 +156,7 @@ public class GroceryFragment extends Fragment {
         //this should work if there is something in masterList, it works for Kevin - we do not need multiple listviews
         adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, ingredientInfo);
         lv.setAdapter(adapter);
-
+*/
         return v;
 
     }

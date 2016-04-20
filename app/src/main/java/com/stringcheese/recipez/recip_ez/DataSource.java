@@ -191,4 +191,35 @@ public class DataSource {
 
         }
     }
+
+
+    public List<Ingredient> getGrocery(List<String> mergedList){
+        List<Ingredient> ingredients = new ArrayList<Ingredient>();
+        List<Long> recipe_ids = new ArrayList<Long>();
+        for(String recipe_name: mergedList){
+            recipe_name = recipe_name.substring(1);
+            String query = "SELECT * FROM recipes WHERE recipe_name = '" + recipe_name + "';";
+            //String query = "SELECT * FROM recipes WHERE recipe_name = '" + "Test" + "';";
+
+            Cursor c = db.rawQuery(query, null);
+            c.moveToFirst();
+            if(c.getCount() > 0) {
+                long recipe_id = c.getLong(c.getColumnIndex(dbHelper.COLUMN_ID));
+                Log.v("MEAL", "recipe_id="+Long.toString((recipe_id)));
+                recipe_ids.add(recipe_id);
+            }
+            else{
+                Log.v("MEAL", "something emessedfaslkj");
+            }
+        }
+        //get the list of ingredient objects from the recipe ids
+        for(Long id:recipe_ids){
+            Log.v("MEAL", Long.toString(id));
+            ingredients.addAll(getRecipeIngredients(Long.toString(id)));
+        }
+        for(Ingredient t:ingredients){
+            Log.v("MEAL", t.get_ingredientname());
+        }
+        return ingredients;
+    }
 }

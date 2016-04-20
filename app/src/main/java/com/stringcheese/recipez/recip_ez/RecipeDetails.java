@@ -1,6 +1,8 @@
 package com.stringcheese.recipez.recip_ez;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -8,6 +10,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -15,8 +18,11 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import org.w3c.dom.Text;
 
+import java.io.File;
 import java.lang.reflect.Array;
 import java.util.List;
 
@@ -73,8 +79,16 @@ public class RecipeDetails extends AppCompatActivity {
 
         //set image
         if(r.get_image()!=null) {
-            ImageView imgView = (ImageView) findViewById(R.id.image);
-            imgView.setImageURI((Uri.parse(r.get_image())));
+
+            //imgView.setImageURI((Uri.parse(r.get_image())));
+            File f = new File(r.get_image());
+            if(!f.exists()) Log.v("TAG", "FILE DOESN'T EXIST");
+
+            ImageView myImage = (ImageView) findViewById(R.id.toolbar_image);
+
+            //Picasso.with(this).load("file://"+r.get_image()).config(Bitmap.Config.RGB_565).fit().centerCrop().into(myImage);
+            Picasso.with(this).load(Uri.parse(r.get_image())).into(myImage);
+            Log.v("TAG", r.get_image());
         }
 
     }

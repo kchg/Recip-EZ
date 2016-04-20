@@ -1,7 +1,9 @@
 package com.stringcheese.recipez.recip_ez;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
@@ -109,6 +111,17 @@ public class add_recipes extends AppCompatActivity {
     private String image_string = "";
     public void setImage(Uri image){
         this.image_string = image.toString();
+    }
+
+    private String getRealPathFromURI(Uri contentUri) {
+        String[] proj = { MediaStore.Images.Media.DATA };
+        Cursor cursor = managedQuery(contentUri, proj, null, null, null);
+        if (cursor == null) {
+            return contentUri.getPath();
+        }
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        return cursor.getString(column_index);
     }
     //method that is called when user clicks submit recipe; package everything together and insert into database
     public void submitRecipe(){
