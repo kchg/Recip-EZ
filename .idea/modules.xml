@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/Recip-EZ.iml" filepath="$PROJECT_DIR$/Recip-EZ.iml" />
       <module fileurl="file://$PROJECT_DIR$/RecipeEZ.iml" filepath="$PROJECT_DIR$/RecipeEZ.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
